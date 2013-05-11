@@ -1,11 +1,11 @@
 # Cuz ya should..."Treat your servers like cattle, not pets"
 ----
 
-A collection of stuff a software geek may use to configure their "infrastructure".
+A collection of scripts for provisioning a virtualized dev environment.
 
 ## Background
 
-My employer has this good habit of replacing company-issued laptops on a regular (< two years) basis. While the performance boost one typically gets from a hardware refresh is always welcome, manually provisioning the new machine can be cumbersome if not problematic.
+Like any other geek, you'll see a smile on my face when someone hands me a new laptop.  But like most other geeks, I'm not truly happy with that new laptop 'till I can tweek it to suit my needs.  What's not so cool is the slow and laborious process of manually configuring a laptop to support my current dev environment. 
 
 Being a full-time [DevOps](http://en.wikipedia.org/wiki/DevOps) believer and part-time practioner, I've decided to put together this repository to help simplify the provisioning process.
 

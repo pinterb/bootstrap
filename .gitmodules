@@ -1,0 +1,6 @@
+[submodule "modules"]
+	path = modules
+	url = git://github.com/pinterb/puppet-modules.git
+[submodule "bin/puppet"]
+	path = bin/puppet
+	url = git://github.com/pinterb/puppet-bootstrap.git
