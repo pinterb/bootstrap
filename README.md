@@ -13,6 +13,7 @@ Being a full-time [DevOps](http://en.wikipedia.org/wiki/DevOps) believer and par
 
 * Some shell scripts
 * [Vagrant](http://www.vagrantup.com/)
+* [Ansible](http://www.ansibleworks.com/)
 * [Puppet](https://puppetlabs.com/puppet/puppet-open-source/)
 
 ## License
