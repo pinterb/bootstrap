@@ -11,7 +11,7 @@ Being a full-time [DevOps](http://en.wikipedia.org/wiki/DevOps) believer and par
 
 ## The Toolbox
 
-* Some shell scripts
+* Some [Rerun](http://rerun.github.io/rerun/) shell scripts
 * [Vagrant](http://www.vagrantup.com/)
 * [Ansible](http://www.ansibleworks.com/)
 * [Puppet](https://puppetlabs.com/puppet/puppet-open-source/)
