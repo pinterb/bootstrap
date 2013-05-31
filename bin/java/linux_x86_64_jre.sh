@@ -4,6 +4,8 @@
 
 set -e
 
+# Last I checked, the following site should have a link to the latest auto-downloadable JRE:
+# http://www.java.com/en/download/manual.jsp
 JRE_VERSION=jre1.7.0_21
 REPO_URL="http://javadl.sun.com/webapps/download/AutoDL?BundleId=76853"
 TAR_GZ_NAME=java.tar.gz
