@@ -1,0 +1,6 @@
+---
+# file: roles/common/tasks/main.yml
+
+- name: git yum package installed
+  yum: pkg=git state=installed
+  tags: git
