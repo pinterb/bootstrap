@@ -53,22 +53,40 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you're using for more
   # information on available options.
 
-  # Enable provisioning with Puppet stand alone.  Puppet manifests
-  # are contained in a directory path relative to this Vagrantfile.
-  # You will need to create the manifests directory and a manifest in
-  # the file base.pp in the manifests_path directory.
+  # Enable provisioning with Ansible. 
+  # http://docs.vagrantup.com/v2/provisioning/ansible.html
   #
-  # An example Puppet manifest to provision the message of the day:
-  #
-  # # group { "puppet":
-  # #   ensure => "present",
-  # # }
-  # #
-  # # File { owner => 0, group => 0, mode => 0644 }
-  # #
-  # # file { '/etc/motd':
-  # #   content => "Welcome to your Vagrant-built virtual machine!
-  # #               Managed by Puppet.\n"
-  # # }
-  #
+  # The ansible provisioner allows you to provision the guest using Ansible playbooks.
+  # Ansible playbooks are YAML documents that comprise the set of steps to be orchestrated
+  # on one or more machines.
+  
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "site.yml"
+    ansible.inventory_file = "vagrant/hosts.ini"
+  end
+
+  # Vagrant is able to define and control multiple guest machines per Vagrantfile. This is 
+  # known as a "multi-machine" environment.
+
+  # db server
+  config.vm.define :db do |config|
+    config.vm.hostname = "db-msn-1.custapps.net"
+    config.vm.network :forwarded_port, guest: 5432, host: 5432
+    config.vm.network :private_network, ip: "192.168.33.10"
+  end
+  
+  # web services server
+  config.vm.define :ws do |config|
+    config.vm.hostname = "ws-msn-1.custapps.net"
+    config.vm.network :forwarded_port, guest: 42100, host: 42100
+    config.vm.network :private_network, ip: "192.168.33.20"
+  end
+ 
+  # portal server
+  config.vm.define :portal do |config|
+    config.vm.hostname = "portal-msn-1.custapps.net"
+    config.vm.network :forwarded_port, guest: 62100, host: 62100
+    config.vm.network :private_network, ip: "192.168.33.30"
+  end
+
 end
