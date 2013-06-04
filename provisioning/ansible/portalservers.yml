@@ -2,5 +2,6 @@
 # file: portalservers.yml
 
 - hosts: portalservers
+  user: root
   roles:
   - common
