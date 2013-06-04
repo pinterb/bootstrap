@@ -1,3 +1,6 @@
 ---
 # file: wsservers.yml
 
+- hosts: wsservers
+  roles:
+  - common

@@ -1,4 +1,6 @@
 ---
 # file: portalservers.yml
 
-
+- hosts: portalservers
+  roles:
+  - common
