@@ -1,6 +1,9 @@
 ---
 # file: roles/common/tasks/main.yml
 
-- name: git yum package installed
-  yum: pkg=git state=installed
-  tags: git
+- name: install common packages 
+  sudo: True
+  yum: pkg=$item state=installed
+  with_items:
+    - git
+  tags: common-packages 

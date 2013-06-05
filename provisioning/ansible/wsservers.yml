@@ -2,6 +2,5 @@
 # file: wsservers.yml
 
 - hosts: wsservers
-  user: root
   roles:
   - common
