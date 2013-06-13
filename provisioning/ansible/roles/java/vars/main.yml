@@ -1,0 +1,10 @@
+---
+# file: roles/java/vars/main.yml 
+
+#jdk_archive_$ansible_os_family_$ansible_architecture:  
+jdk_archive_Debian_x86_64: jdk-7u21-linux-x64.tar.gz  
+jdk_archive_Redhat_x86_64: jdk-7u21-linux-x64.rpm  
+
+#jre_archive_$ansible_os_family_$ansible_architecture:  
+jre_archive_Debian_x86_64: jre-7u21-linux-x64.tar.gz 
+jre_archive_Redhat_x86_64: jre-7u21-linux-x64.rpm 

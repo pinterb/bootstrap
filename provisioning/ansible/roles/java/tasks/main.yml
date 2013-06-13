@@ -1,0 +1,10 @@
+---
+# file: roles/java/tasks/main.yml
+
+- name: download
+- name: install common packages 
+  sudo: True
+  yum: pkg=$item state=installed
+  with_items:
+    - git
+  tags: common-packages 

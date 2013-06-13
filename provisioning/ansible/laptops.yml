@@ -1,0 +1,7 @@
+---
+# file: laptops.yml
+
+- hosts: laptops
+  connection: local
+  roles:
+    - common
