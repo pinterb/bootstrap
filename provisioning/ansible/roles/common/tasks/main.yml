@@ -1,24 +1,7 @@
 ---
 # file: roles/common/tasks/main.yml
 
-- name: install common Redhat packages 
-  sudo: True
-  yum: pkg=$item state=present
-  with_items:
-    - git
-    - wget 
-    - curl 
-    - rsync 
-  only_if: "'$ansible_os_family' == 'Redhat'"
-  tags: common-redhat-packages 
-
-- name: install common Debian packages 
-  sudo: True
-  apt: pkg=$item state=present
-  with_items:
-    - git
-    - wget 
-    - curl 
-    - rsync 
-  only_if: "'$ansible_os_family' == 'Debian'"
-  tags: common-debian-packages 
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'

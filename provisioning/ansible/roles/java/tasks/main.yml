@@ -1,10 +1,7 @@
 ---
 # file: roles/java/tasks/main.yml
 
-- name: download
-- name: install common packages 
-  sudo: True
-  yum: pkg=$item state=installed
-  with_items:
-    - git
-  tags: common-packages 
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'

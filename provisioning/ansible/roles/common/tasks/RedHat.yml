@@ -1,0 +1,13 @@
+---
+# file: roles/common/tasks/RedHat.yml
+
+- name: install common Redhat packages 
+  sudo: True
+  yum: pkg=$item state=present
+  with_items:
+    - git
+    - wget 
+    - curl 
+    - rsync 
+  only_if: "'$ansible_os_family' == 'Redhat'"
+  tags: common-redhat-packages 
