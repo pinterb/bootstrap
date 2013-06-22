@@ -2,5 +2,8 @@
 # file: wsservers.yml
 
 - hosts: wsservers
+  user: vagrant
+  sudo: True
   roles:
-  - common
+    - common
+    - java

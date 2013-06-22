@@ -6,7 +6,7 @@ jvm_version: 1.7.0_25
 
 #java_install_dir_$ansible_os_family_$ansible_architecture:  
 java_install_dir_Debian_x86_64: /usr/local/java  
-java_install_dir_RedHat_x86_64: /usr/local/java  
+java_install_dir_RedHat_x86_64: /usr/java  
 
 #jdk_archive_$ansible_os_family_$ansible_architecture:  
 jdk_archive_Debian_x86_64: jdk-7u25-linux-x64.tar.gz  

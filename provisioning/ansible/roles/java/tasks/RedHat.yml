@@ -1,3 +1,49 @@
 ---
 # file: roles/java/tasks/RedHat.yml
 
+- name: create a java directory
+  file: path=${java_install_dir_RedHat_${ansible_architecture}} owner=root group=root mode=0775 state=directory
+  tags: jdk_extracted
+
+- name: copy jdk${jvm_version} rpm file
+  copy: src=${jdk_archive_RedHat_${ansible_architecture}} dest=${java_install_dir_RedHat_${ansible_architecture}} mode=0664
+  tags: jdk_extracted
+
+- name: Instasll jdk${jvm_version} rpm file
+  action: shell yum -y --nogpgcheck localinstall ${java_install_dir_RedHat_${ansible_architecture}}/${jdk_archive_RedHat_${ansible_architecture}} 
+  tags: noremove
+
+- name: install java alternatives
+  action: command /usr/sbin/alternatives --install /usr/bin/java java ${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version}/bin/java 20000 
+  tags: java_alternatives 
+
+- name: set java alternatives
+  action: command /usr/sbin/alternatives --set java ${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version}/bin/java
+  tags: java_alternatives 
+
+- name: install jar alternatives
+  action: command /usr/sbin/alternatives --install /usr/bin/jar jar ${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version}/bin/jar 20000 
+  tags: java_alternatives 
+
+- name: set jar alternatives
+  action: command /usr/sbin/alternatives --set jar ${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version}/bin/jar
+  tags: java_alternatives 
+
+- name: install javac alternatives
+  action: command /usr/sbin/alternatives --install /usr/bin/javac javac ${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version}/bin/javac 20000 
+  tags: java_alternatives 
+
+- name: set javac alternatives
+  action: command /usr/sbin/alternatives --set javac ${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version}/bin/javac
+  tags: java_alternatives 
+
+- name: create a java latest symlink
+  file: src=${java_install_dir_RedHat_${ansible_architecture}}/jdk${jvm_version} dest=${java_install_dir_RedHat_${ansible_architecture}}/latest owner=root group=root state=link
+  tags: java_profiledotd 
+
+- name: Copy config $item 
+  action: template src=etc_profiled_java_RedHat_${ansible_architecture}.sh dest=/etc/profile.d/java.sh owner=root group=root mode=0644
+  tags: java_profiledotd 
+
+- name: cleanup jdk${jvm_version} archive file
+  file: path=${java_install_dir_RedHat_${ansible_architecture}}/${jdk_archive_RedHat_${ansible_architecture}} state=absent

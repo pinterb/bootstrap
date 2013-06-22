@@ -4,4 +4,3 @@
 - include: dbservers.yml
 - include: wsservers.yml
 - include: portalservers.yml
-- include: laptops.yml

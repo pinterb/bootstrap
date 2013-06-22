@@ -2,5 +2,8 @@
 # file: portalservers.yml
 
 - hosts: portalservers
+  user: vagrant
+  sudo: True
   roles:
   - common
+  - java 

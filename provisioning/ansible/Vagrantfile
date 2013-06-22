@@ -64,6 +64,7 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "site.yml"
     ansible.inventory_file = "vagrant/hosts.ini"
     ansible.verbose = true
+    ansible.sudo = true
   end
 
   # Vagrant is able to define and control multiple guest machines per Vagrantfile. This is 
