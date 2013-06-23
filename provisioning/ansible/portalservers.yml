@@ -6,4 +6,5 @@
   sudo: True
   roles:
   - common
-  - java 
+  - java
+  - maven
