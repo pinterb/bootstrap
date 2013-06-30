@@ -27,7 +27,7 @@
   tags: mvn_profiledotd
 
 - name: Copy config maven.sh 
-  action: template src=etc_profiled_maven.sh dest=/etc/profile.d/maven.sh owner=root group=root mode=0644
+  action: template src=etc_profiled_maven.sh.j2 dest=/etc/profile.d/maven.sh owner=root group=root mode=0644
   tags: mvn_profiledotd 
 
 - name: cleanup maven ${mvn_minor_version} archive file 

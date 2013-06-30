@@ -51,7 +51,7 @@
   tags: java_profiledotd 
 
 - name: Copy config $item 
-  action: template src=etc_profiled_java_Debian_${ansible_architecture}.sh dest=/etc/profile.d/java.sh owner=root group=root mode=0644
+  action: template src=etc_profiled_java_Debian_${ansible_architecture}.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
   tags: java_profiledotd 
 
 - name: cleanup jdk${jvm_version} archive file
