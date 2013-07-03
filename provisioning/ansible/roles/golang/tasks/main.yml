@@ -1,0 +1,43 @@
+---
+# file: roles/golang/tasks/main.yml
+
+- name: Is golang currently installed?
+  shell: "[ -d {{ golang_install_dir }}/go ] && echo 'Found' || echo ''"
+  register: golang_installed
+  tags: golang
+
+- name: Create a golang directory
+  file: path={{ golang_install_dir }} owner=root group=root state=directory
+  when: (not golang_installed.stdout)
+  tags: golang
+
+- name: Is current version (ie {{ golang_minor_version }}) of golang installed? 
+  shell: "{{ golang_install_dir }}/go/bin/go version | grep {{ golang_minor_version }}"
+  #shell: "{{ golang_install_dir }}/go/bin/go version | sed 's/[^0-9.]*\([0-9.]*\).*/\1/' | grep {{ golang_minor_version }}"
+  when: golang_installed.stdout
+  register: golang_version_installed
+
+- name: Download go binary ${golang_minor_version}
+  get_url: dest={{ golang_install_dir }}/{{ golang_download_file_x86_64 }} url={{ golang_download_url_x86_64 }}
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  tags: golang
+
+- name: Extract go binary ${golang_minor_version} archive file
+  action: command chdir={{ golang_install_dir }} tar zxvf {{ golang_install_dir }}/{{ golang_download_file_x86_64 }} --owner=root
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  tags: golang
+
+- name: Copy config go.sh 
+  action: template src=etc_profiled_go.sh.j2 dest=/etc/profile.d/go.sh owner=root group=root mode=0644
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  tags: golang
+
+- name: Create a gopath directory
+  file: path={{ golang_path }} owner={{ golang_path_user }} group={{ golang_path_user }} state=directory
+  when: ((not golang_installed.stdout) or (not golang_version_installed.stdout)) and golang_path is defined and golang_path_user is defined
+  tags: golang
+
+- name: Cleanup go binary ${golang_minor_version} archive file 
+  file: path={{ golang_install_dir }}/{{ golang_download_file_x86_64 }} state=absent
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  tags: golang

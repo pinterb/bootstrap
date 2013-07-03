@@ -3,7 +3,11 @@
 
 - hosts: laptops
   connection: local
+  vars:
+    golang_path: /home/pinter/ext/golang
+    golang_path_user: pinter
   roles:
-    - common
-    - java 
-    - maven 
+#    - common
+#    - java 
+#    - maven 
+    - golang 

@@ -1,0 +1,7 @@
+#!/bin/sh
+{% if golang_path is defined %}
+export GOPATH={{ golang_path }}
+{% endif %}
+export GOROOT={{ golang_install_dir }}/go
+export PATH=$PATH:$GOROOT/bin
+~

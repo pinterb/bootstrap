@@ -16,6 +16,10 @@ Being a full-time [DevOps](http://en.wikipedia.org/wiki/DevOps) believer and par
 * [Ansible](http://www.ansibleworks.com/)
 * [Puppet](https://puppetlabs.com/puppet/puppet-open-source/)
 
+## Notes 
+
+* Provisioning scripts originally started out with support for 32 bit OS's.  While certainly doable, the scripts became a bit unruly.  Since the future belongs to 64 bit OS's, I decided to scale back support of 32 bit.  Please fork this repo if this is something you'd like to implement more fully.  And of course, pull requests are welcome. 
+
 ## License
 
 [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
