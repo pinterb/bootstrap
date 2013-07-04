@@ -2,3 +2,4 @@
 *.swp
 provisioning/ansible/roles/java/files/*.rpm
 provisioning/ansible/roles/java/files/*.tar.gz
+feh

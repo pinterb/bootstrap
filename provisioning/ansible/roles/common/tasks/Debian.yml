@@ -1,13 +1,13 @@
 ---
 # file: roles/common/tasks/Debian.yml
 
-- name: install common Debian packages 
+- name: Install common Debian packages
   sudo: True
-  apt: pkg=$item state=present
+  apt: pkg={{ item }} state=present
   with_items:
     - git
     - wget 
     - curl 
     - rsync 
-  only_if: "'$ansible_os_family' == 'Debian'"
+  when: ansible_os_family == 'Debian'
   tags: common-debian-packages 

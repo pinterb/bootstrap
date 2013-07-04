@@ -1,58 +1,58 @@
 ---
 # file: roles/java/tasks/Debian.yml
 
-- name: create a java directory
-  file: path=${java_install_dir_Debian_${ansible_architecture}} owner=root group=root mode=0775 state=directory
-  tags: jdk_extracted
+- name: Create Debian a java directory
+  file: path={{ java_install_dir_Debian_x86_64 }} owner=root group=root mode=0775 state=directory
+  tags: jdk
 
-- name: copy jdk${jvm_version} archive file
-  copy: src=${jdk_archive_Debian_${ansible_architecture}} dest=${java_install_dir_Debian_${ansible_architecture}} mode=0664
-  tags: jdk_extracted
+- name: Copy jdk{{ jvm_version }} archive file
+  copy: src={{ jdk_archive_Debian_x86_64 }} dest={{ java_install_dir_Debian_x86_64 }} mode=0664
+  tags: jdk
 
-- name: extract jdk${jvm_version} archive file
-  action: command creates=${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version} chdir=${java_install_dir_Debian_${ansible_architecture}} tar zxvf ${java_install_dir_Debian_${ansible_architecture}}/${jdk_archive_Debian_${ansible_architecture}} --owner=root
-  register: ${jvm_version}_jdk_extracted
-  tags: jdk_extracted
+- name: Extract jdk{{ jvm_version }} archive file
+  action: command creates={{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }} chdir={{ java_install_dir_Debian_x86_64 }} tar zxvf {{ java_install_dir_Debian_x86_64 }}/{{ jdk_archive_Debian_x86_64 }} --owner=root
+  tags: jdk
 
-- name: install java alternatives
-  action: command update-alternatives --install /usr/bin/java java ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/bin/java 1
-  tags: java_alternatives 
+- name: Install java alternatives
+  action: command update-alternatives --install /usr/bin/java java {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/java 1
+  tags: jdk
 
-- name: set java alternatives
-  action: command update-alternatives --set java ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/bin/java
-  tags: java_alternatives 
+- name: Set java alternatives
+  action: command update-alternatives --set java {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/java
+  tags: jdk
 
-- name: install jar alternatives
-  action: command update-alternatives --install /usr/bin/jar jar ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/bin/jar 1
-  tags: java_alternatives 
+- name: Install jar alternatives
+  action: command update-alternatives --install /usr/bin/jar jar {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/jar 1
+  tags: jdk
 
-- name: set jar alternatives
-  action: command update-alternatives --set jar ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/bin/jar
-  tags: java_alternatives 
+- name: Set jar alternatives
+  action: command update-alternatives --set jar {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/jar
+  tags: jdk
 
-- name: install javac alternatives
-  action: command update-alternatives --install /usr/bin/javac javac ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/bin/javac 1
-  tags: java_alternatives 
+- name: Install javac alternatives
+  action: command update-alternatives --install /usr/bin/javac javac {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/javac 1
+  tags: jdk
 
-- name: set javac alternatives
-  action: command update-alternatives --set javac ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/bin/javac
-  tags: java_alternatives 
+- name: Set javac alternatives
+  action: command update-alternatives --set javac {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/javac
+  tags: jdk
 
-- name: install javaws alternatives
-  action: command update-alternatives --install /usr/bin/javaws javaws ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/jre/bin/javaws 1
-  tags: java_alternatives 
+- name: Install javaws alternatives
+  action: command update-alternatives --install /usr/bin/javaws javaws {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/jre/bin/javaws 1
+  tags: jdk
 
-- name: set javaws alternatives
-  action: command update-alternatives --set javaws ${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version}/jre/bin/javaws
-  tags: java_alternatives 
+- name: Set javaws alternatives
+  action: command update-alternatives --set javaws {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/jre/bin/javaws
+  tags: jdk
 
-- name: create a java latest symlink
-  file: src=${java_install_dir_Debian_${ansible_architecture}}/jdk${jvm_version} dest=${java_install_dir_Debian_${ansible_architecture}}/latest owner=root group=root state=link
-  tags: java_profiledotd 
+- name: Create a java latest symlink
+  file: src={{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }} dest={{ java_install_dir_Debian_x86_64 }}/latest owner=root group=root state=link
+  tags: jdk
 
 - name: Copy config $item 
-  action: template src=etc_profiled_java_Debian_${ansible_architecture}.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
-  tags: java_profiledotd 
+  action: template src=etc_profiled_java_Debian_x86_64.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
+  tags: jdk
 
-- name: cleanup jdk${jvm_version} archive file
-  file: path=${java_install_dir_Debian_${ansible_architecture}}/${jdk_archive_Debian_${ansible_architecture}} state=absent
+- name: Cleanup Debian jdk{{ jvm_version }} archive file
+  file: path={{ java_install_dir_Debian_x86_64 }}/{{ jdk_archive_Debian_x86_64 }} state=absent
+  tags: jdk
