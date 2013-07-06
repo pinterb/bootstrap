@@ -32,9 +32,28 @@
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
 
-- name: Create a gopath directory
-  file: path={{ golang_path }} owner={{ golang_path_user }} group={{ golang_path_user }} state=directory
+- name: Create a gopath base directory
+  file: path={{ item }} owner={{ golang_path_user }} group={{ golang_path_user }} state=directory
   when: ((not golang_installed.stdout) or (not golang_version_installed.stdout)) and golang_path is defined and golang_path_user is defined
+  with_items: $golang_path
+  tags: golang
+
+- name: Create a gopath src sub-directory
+  file: path={{ item }}/src owner={{ golang_path_user }} group={{ golang_path_user }} state=directory
+  when: ((not golang_installed.stdout) or (not golang_version_installed.stdout)) and golang_path is defined and golang_path_user is defined
+  with_items: $golang_path
+  tags: golang
+
+- name: Create a gopath bin sub-directory
+  file: path={{ item }}/bin owner={{ golang_path_user }} group={{ golang_path_user }} state=directory
+  when: ((not golang_installed.stdout) or (not golang_version_installed.stdout)) and golang_path is defined and golang_path_user is defined
+  with_items: $golang_path
+  tags: golang
+
+- name: Create a gopath pkg sub-directory
+  file: path={{ item }}/pkg owner={{ golang_path_user }} group={{ golang_path_user }} state=directory
+  when: ((not golang_installed.stdout) or (not golang_version_installed.stdout)) and golang_path is defined and golang_path_user is defined
+  with_items: $golang_path
   tags: golang
 
 - name: Cleanup go binary ${golang_minor_version} archive file 
