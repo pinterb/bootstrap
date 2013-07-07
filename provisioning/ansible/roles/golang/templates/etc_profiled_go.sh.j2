@@ -4,5 +4,7 @@ export GOPATH={{ golang_path|join(':') }}
 {% endif %}
 export GOROOT={{ golang_install_dir }}/go
 export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:${GOPATH//://bin:}/bin
+{% if golang_path is defined %}
+#export PATH=$PATH:${GOPATH//://bin:}/bin
+{% endif %}
 ~
