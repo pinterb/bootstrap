@@ -12,4 +12,4 @@ Until you get up to speed with Ansible, here are some commands I found useful:
 
 ### Run playbook against a local node (i.e. localhost) where playbook contains 'connection: local'
 
-    ansible-playbook site.yml -i local/hosts.ini --ask-sudo-pass
+    ansible-playbook laptop.yml -i local/hosts.ini --ask-sudo-pass

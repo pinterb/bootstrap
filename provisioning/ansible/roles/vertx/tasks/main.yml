@@ -1,0 +1,44 @@
+---
+# file: roles/vertx/tasks/main.yml
+
+- name: Is vertx currently installed?
+  shell: "[ -d {{ vertx_install_dir }}/vertx ] && echo 'Found' || echo ''"
+  register: vertx_installed
+  tags: vertx 
+
+- name: Create a vertx directory
+  file: path={{ vertx_install_dir }} owner=root group=root state=directory
+  when: (not vertx_installed.stdout)
+  tags: vertx
+
+- name: Is current version (ie {{ vertx_minor_version }}) of vertx already installed?
+  shell: "ls {{ vertx_install_dir }} | grep 'vert.x-{{ vertx_minor_version }}'"
+  when: vertx_installed.stdout
+  register: vertx_version_installed
+  tags: vertx
+  
+- name: Download vertx {{ vertx_minor_version }}
+  get_url: dest={{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz url={{ vertx_download_url }}
+  when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
+  tags: vertx
+
+- name: Extract vertx {{ vertx_minor_version }} archive file
+  action: command creates={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final chdir={{ vertx_install_dir }} tar zxvf {{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz --owner=root
+  when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
+  tags: vertx
+
+- name: Create a vertx symlink
+  file: src={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final dest={{ vertx_install_dir }}/vertx owner=root group=root state=link
+  tags: vertx
+  when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
+  tags: vertx
+
+- name: Copy config vertx.sh 
+  action: template src=etc_profiled_vertx.sh.j2 dest=/etc/profile.d/vertx.sh owner=root group=root mode=0644
+  when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
+  tags: vertx
+
+- name: Cleanup vertx {{ vertx_minor_version }} archive file 
+  file: path={{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz state=absent
+  when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
+  tags: vertx
