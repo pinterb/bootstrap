@@ -15,6 +15,7 @@
   shell: "ls {{ vertx_install_dir }} | grep 'vert.x-{{ vertx_minor_version }}'"
   when: vertx_installed.stdout
   register: vertx_version_installed
+  ignore_errors: True
   tags: vertx
   
 - name: Download vertx {{ vertx_minor_version }}
@@ -23,7 +24,7 @@
   tags: vertx
 
 - name: Extract vertx {{ vertx_minor_version }} archive file
-  action: command creates={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final chdir={{ vertx_install_dir }} tar zxvf {{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz --owner=root
+  command: creates={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final chdir={{ vertx_install_dir }} tar zxvf {{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz --owner=root
   when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
   tags: vertx
 
@@ -34,7 +35,7 @@
   tags: vertx
 
 - name: Copy config vertx.sh 
-  action: template src=etc_profiled_vertx.sh.j2 dest=/etc/profile.d/vertx.sh owner=root group=root mode=0644
+  template: src=etc_profiled_vertx.sh.j2 dest=/etc/profile.d/vertx.sh owner=root group=root mode=0644
   when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
   tags: vertx
 

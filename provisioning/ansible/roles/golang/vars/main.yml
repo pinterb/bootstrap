@@ -2,7 +2,7 @@
 # file: roles/golang/vars/main.yml 
 
 golang_major_version: 1 
-golang_minor_version: 1.1.1
+golang_minor_version: 1.1.2
 golang_base_url: https://go.googlecode.com/files/
 golang_download_file_x86_64: go${golang_minor_version}.linux-amd64.tar.gz
 golang_download_url_x86_64: ${golang_base_url}${golang_download_file_x86_64} 

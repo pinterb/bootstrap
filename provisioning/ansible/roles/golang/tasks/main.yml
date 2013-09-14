@@ -12,10 +12,12 @@
   tags: golang
 
 - name: Is current version (ie {{ golang_minor_version }}) of golang already installed? 
-  shell: "{{ golang_install_dir }}/go/bin/go version | grep {{ golang_minor_version }}"
+  shell: "{{ golang_install_dir }}/go/bin/go version | grep {{ golang_minor_version}}"
   #shell: "{{ golang_install_dir }}/go/bin/go version | sed 's/[^0-9.]*\([0-9.]*\).*/\1/' | grep {{ golang_minor_version }}"
   when: golang_installed.stdout
   register: golang_version_installed
+  changed_when: "golang_version_installed.rc == 1"
+  ignore_errors: True
 
 - name: Download go binary ${golang_minor_version}
   get_url: dest={{ golang_install_dir }}/{{ golang_download_file_x86_64 }} url={{ golang_download_url_x86_64 }}
@@ -23,12 +25,12 @@
   tags: golang
 
 - name: Extract go binary ${golang_minor_version} archive file
-  action: command chdir={{ golang_install_dir }} tar zxvf {{ golang_install_dir }}/{{ golang_download_file_x86_64 }} --owner=root
+  command: chdir={{ golang_install_dir }} tar zxvf {{ golang_install_dir }}/{{ golang_download_file_x86_64 }} --owner=root
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
 
 - name: Copy config go.sh 
-  action: template src=etc_profiled_go.sh.j2 dest=/etc/profile.d/go.sh owner=root group=root mode=0644
+  template: src=etc_profiled_go.sh.j2 dest=/etc/profile.d/go.sh owner=root group=root mode=0644
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
 

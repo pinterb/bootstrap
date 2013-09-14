@@ -1,17 +1,17 @@
 ---
 # file: roles/java/vars/main.yml 
 
-jvm_prev_version: 1.7.0_21
-jvm_version: 1.7.0_25 
+jvm_prev_version: 1.7.0_25
+jvm_version: 1.7.0_40
 
 #java_install_dir_$ansible_os_family_$ansible_architecture:  
 java_install_dir_Debian_x86_64: /usr/local/java  
 java_install_dir_RedHat_x86_64: /usr/java  
 
 #jdk_archive_$ansible_os_family_$ansible_architecture:  
-jdk_archive_Debian_x86_64: jdk-7u25-linux-x64.tar.gz  
-jdk_archive_RedHat_x86_64: jdk-7u25-linux-x64.rpm  
+jdk_archive_Debian_x86_64: jdk-7u40-linux-x64.tar.gz  
+jdk_archive_RedHat_x86_64: jdk-7u40-linux-x64.rpm  
 
 #jre_archive_$ansible_os_family_$ansible_architecture:  
-jre_archive_Debian_x86_64: jre-7u25-linux-x64.tar.gz 
-jre_archive_RedHat_x86_64: jre-7u25-linux-x64.rpm 
+jre_archive_Debian_x86_64: jre-7u40-linux-x64.tar.gz 
+jre_archive_RedHat_x86_64: jre-7u40-linux-x64.rpm 
