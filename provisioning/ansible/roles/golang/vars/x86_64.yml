@@ -1,5 +1,5 @@
 ---
 # file: roles/golang/vars/x86_64.yml 
 
-golang_download_file: go${golang_minor_version}.linux-amd64.tar.gz
-golang_download_url: ${golang_base_url}${golang_download_file} 
+golang_download_file: "go{{ golang_minor_version }}.linux-amd64.tar.gz"
+golang_download_url: "{{ golang_base_url }}{{ golang_download_file }}" 
