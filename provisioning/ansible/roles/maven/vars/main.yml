@@ -2,6 +2,6 @@
 # file: roles/maven/vars/main.yml 
 
 mvn_major_version: 3
-mvn_minor_version: 3.0.5
-mvn_download_url: http://apache.mirrors.tds.net/maven/maven-${mvn_major_version}/${mvn_minor_version}/binaries/apache-maven-${mvn_minor_version}-bin.tar.gz 
+mvn_minor_version: 3.1.1
+mvn_download_url: http://apache.mirrors.tds.net/maven/maven-{{ mvn_major_version }}/{{ mvn_minor_version }}/binaries/apache-maven-{{ mvn_minor_version }}-bin.tar.gz 
 mvn_install_dir: /opt

@@ -15,6 +15,8 @@
   shell: "{{ mvn_install_dir }}/maven/bin/mvn -version | grep 'Apache Maven {{ mvn_minor_version }}'"
   when: mvn_installed.stdout
   register: mvn_version_installed
+  changed_when: "mvn_version_installed.rc == 1"
+  ignore_errors: True
   tags: maven
   
 - name: Download maven {{ mvn_minor_version }}

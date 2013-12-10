@@ -41,7 +41,7 @@
   file: src={{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }} dest={{ java_install_dir_RedHat_x86_64 }}/latest owner=root group=root state=link
   tags: jdk 
 
-- name: Copy config $item 
+- name: Copy config to /etc/profile.d/java.sh 
   action: template src=etc_profiled_java_RedHat_x86_64.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
   tags: jdk 
 

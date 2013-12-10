@@ -19,12 +19,12 @@
   changed_when: "golang_version_installed.rc == 1"
   ignore_errors: True
 
-- name: Download go binary ${golang_minor_version}
+- name: Download go binary {{ golang_minor_version }}
   get_url: dest={{ golang_install_dir }}/{{ golang_download_file_x86_64 }} url={{ golang_download_url_x86_64 }}
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
 
-- name: Extract go binary ${golang_minor_version} archive file
+- name: Extract go binary {{ golang_minor_version }} archive file
   command: chdir={{ golang_install_dir }} tar zxvf {{ golang_install_dir }}/{{ golang_download_file_x86_64 }} --owner=root
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
@@ -58,7 +58,7 @@
   with_items: $golang_path
   tags: golang
 
-- name: Cleanup go binary ${golang_minor_version} archive file 
+- name: Cleanup go binary {{ golang_minor_version }} archive file 
   file: path={{ golang_install_dir }}/{{ golang_download_file_x86_64 }} state=absent
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
