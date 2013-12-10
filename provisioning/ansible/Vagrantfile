@@ -10,18 +10,6 @@ Vagrant.configure("2") do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box"
 
-  #
-  # The ansible provisioner allows you to provision the guest using Ansible playbooks.
-  # Ansible playbooks are YAML documents that comprise the set of steps to be orchestrated
-  # on one or more machines.
-  
-#  config.vm.provision :ansible do |ansible|
-#    ansible.playbook = "site.yml"
-#    ansible.inventory_path = "vagrant/hosts.ini"
-#    ansible.verbose = true
-#    ansible.sudo = true
-#  end
-
   # Vagrant is able to define and control multiple guest machines per Vagrantfile. This is 
   # known as a "multi-machine" environment.
 
