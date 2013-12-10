@@ -2,9 +2,6 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  # All Vagrant configuration is done here. The most common configuration
-  # options are documented and commented below. For a complete reference,
-  # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "centos-64-x64-vbox4210-nocm"
@@ -13,82 +10,58 @@ Vagrant.configure("2") do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box"
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network :forwarded_port, guest: 80, host: 8080
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network :private_network, ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network :public_network
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  #BP config.vm.synced_folder "../vmdata", "/vagrant_data"
-  
-  # Run "shell provisioner" for Vagrant
-  # Essentially, it runs a shell script on the VM once it has been
-  # booted and configured.
-#BP  config.vm.provision :shell, :path => "../../bin/java/linux_x86_64_jre.sh"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider :virtualbox do |vb|
-  #   # Don't boot with headless mode
-  #   vb.gui = true
-  #
-  #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
-  #
-  # View the documentation for the provider you're using for more
-  # information on available options.
-
-  # Enable provisioning with Ansible. 
-  # http://docs.vagrantup.com/v2/provisioning/ansible.html
   #
   # The ansible provisioner allows you to provision the guest using Ansible playbooks.
   # Ansible playbooks are YAML documents that comprise the set of steps to be orchestrated
   # on one or more machines.
   
-  config.vm.provision :ansible do |ansible|
-    ansible.playbook = "site.yml"
-    ansible.inventory_file = "vagrant/hosts.ini"
-    ansible.verbose = true
-    ansible.sudo = true
-  end
+#  config.vm.provision :ansible do |ansible|
+#    ansible.playbook = "site.yml"
+#    ansible.inventory_path = "vagrant/hosts.ini"
+#    ansible.verbose = true
+#    ansible.sudo = true
+#  end
 
   # Vagrant is able to define and control multiple guest machines per Vagrantfile. This is 
   # known as a "multi-machine" environment.
 
   # db server
-  config.vm.define :db do |db|
+  config.vm.define "db" do |db|
     db.vm.hostname = "db-msn-1.custapps.net"
     db.vm.network :forwarded_port, guest: 5432, host: 5432
     db.vm.network :private_network, ip: "192.168.33.10"
+    db.vm.provision :ansible do |ansible|
+      ansible.playbook = "dbservers.yml"
+      ansible.inventory_path = "vagrant/hosts.ini"
+      ansible.verbose = true
+      ansible.sudo = true
+    end
   end
   
   # web services server
-  config.vm.define :ws do |ws|
+  config.vm.define "ws" do |ws|
     ws.vm.hostname = "ws-msn-1.custapps.net"
     ws.vm.network :forwarded_port, guest: 42100, host: 42100
     ws.vm.network :private_network, ip: "192.168.33.20"
+    ws.vm.provision :ansible do |ansible|
+      ansible.playbook = "wsservers.yml"
+      ansible.inventory_path = "vagrant/hosts.ini"
+      ansible.verbose = true
+      ansible.sudo = true
+    end
   end
  
   # portal server
-  config.vm.define :portal do |portal|
+  config.vm.define "portal" do |portal|
     portal.vm.hostname = "portal-msn-1.custapps.net"
     portal.vm.network :forwarded_port, guest: 62100, host: 62100
     portal.vm.network :private_network, ip: "192.168.33.30"
+    portal.vm.provision :ansible do |ansible|
+      ansible.playbook = "portalservers.yml"
+      ansible.inventory_path = "vagrant/hosts.ini"
+      ansible.verbose = true
+      ansible.sudo = true
+    end
   end
 
 end
