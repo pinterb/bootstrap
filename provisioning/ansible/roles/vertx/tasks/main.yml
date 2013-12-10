@@ -15,16 +15,17 @@
   shell: "ls {{ vertx_install_dir }} | grep 'vert.x-{{ vertx_minor_version }}'"
   when: vertx_installed.stdout
   register: vertx_version_installed
+  changed_when: "vertx_version_installed.rc == 1"
   ignore_errors: True
   tags: vertx
   
 - name: Download vertx {{ vertx_minor_version }}
-  get_url: dest={{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz url={{ vertx_download_url }}
+  get_url: dest={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final.tar.gz url={{ vertx_download_url }}
   when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
   tags: vertx
 
 - name: Extract vertx {{ vertx_minor_version }} archive file
-  command: creates={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final chdir={{ vertx_install_dir }} tar zxvf {{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz --owner=root
+  command: creates={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final chdir={{ vertx_install_dir }} tar zxvf {{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final.tar.gz --owner=root
   when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
   tags: vertx
 
@@ -40,6 +41,6 @@
   tags: vertx
 
 - name: Cleanup vertx {{ vertx_minor_version }} archive file 
-  file: path={{ vertx_install_dir }}/vert.x-${vertx_minor_version}-final.tar.gz state=absent
+  file: path={{ vertx_install_dir }}/vert.x-{{ vertx_minor_version }}-final.tar.gz state=absent
   when: (not vertx_installed.stdout) or (not vertx_version_installed.stdout)
   tags: vertx
