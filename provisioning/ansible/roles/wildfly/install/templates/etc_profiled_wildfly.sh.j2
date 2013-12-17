@@ -1,0 +1,10 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+{% if jboss_home is defined %}
+export JBOSS_HOME={{ jboss_home }}
+{% endif %}
+{% if wildfly_conf_file is defined %}
+export JBOSS_CONF={{ wildfly_conf_file.stdout }}
+{% endif %}
+~

@@ -1,0 +1,120 @@
+---
+# file: roles/wildfly/install/tasks/main.yml
+
+- name: Is wildfly currently installed?
+  shell: "[ -f {{ jboss_home }}/jboss-modules.jar ] && echo 'Found' || echo ''"
+  register: wildfly_installed
+  tags: wildfly 
+
+- name: Create a wildfly installation directory
+  file: path={{ wildfly_install_dir }} owner=root group=root state=directory
+  when: (not wildfly_installed.stdout)
+  tags: wildfly 
+
+- name: Is current version of wildfly already installed?
+  shell: "[ -f {{ wildfly_version_file }} ] && grep -q '{{ wildfly_version_text }}' {{ wildfly_version_file }} && echo $?"
+  when: wildfly_installed.stdout
+  register: wildfly_version_installed
+  changed_when: "wildfly_version_installed.rc == 1"
+  ignore_errors: True
+  tags: wildfly 
+
+- name: Download wildfly binary
+  get_url: dest={{ wildfly_install_dir }}/{{ wildfly_download_file }} url={{ wildfly_download_url }}
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create any groups that the wildfly user should belong to
+  group: name={{ item }} state=present
+  with_items: jboss_groups
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create wildfly user if missing
+  user: name={{ jboss_user }} password=* createhome=no system=yes state=present group={{ jboss_user }}
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Add wildfly user to groups
+  user: name={{ jboss_user }} groups={{ item }} append=yes
+  with_items: jboss_groups
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Extract wildfly binary archive file
+  command: chdir={{ wildfly_install_dir }} tar zxvf {{ wildfly_install_dir }}/{{ wildfly_download_file }} --owner={{ jboss_user }}
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create a standalone log directory 
+  file: path={{ wildfly_install_dir }}/{{ wildfly_expanded_dir }}/standalone/log owner={{ jboss_user }} group={{ jboss_user }} state=directory
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create a standalone log file 
+  file: path={{ wildfly_install_dir }}/{{ wildfly_expanded_dir }}/standalone/log/server.log owner={{ jboss_user }} group={{ jboss_user }} state=touch
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Chown wildfly to jboss_user 
+  command: chdir={{ wildfly_install_dir }} chown -R {{ jboss_user }}:{{ jboss_user }} {{ wildfly_expanded_dir }}
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create a wildfly symlink
+  file: src={{ wildfly_install_dir }}/{{ wildfly_expanded_dir }} dest={{ jboss_home }} owner={{ jboss_user }} group={{ jboss_user }} state=link
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create a version info file for wildfly install
+  action: template src=version_info.txt.j2 dest=/{{ wildfly_version_file }} owner={{ jboss_user }} group={{ jboss_user }} mode=0644 backup=yes
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Register name of configuration file (Redhat)
+  shell: "echo {{ wildfly_conf_dir }}/wildfly.conf"
+  register: wildfly_conf_file 
+  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'RedHat' 
+  tags: wildfly 
+
+- name: Register name of configuration file (Debian)
+  shell: "echo {{ wildfly_conf_dir }}/wildfly"
+  register: wildfly_conf_file 
+  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'Debian' 
+  tags: wildfly 
+
+- name: Create wildfly configuration file 
+  action: template src=wildfly.conf.j2 dest={{ wildfly_conf_file.stdout }} owner=root group=root mode=0644 backup=yes
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create a customized standalone.xml file 
+  action: template src=standalone.xml.j2 dest={{ jboss_home }}/standalone/configuration/standalone.xml owner={{ jboss_user }} group={{ jboss_user }} mode=0644 backup=yes
+  notify: restart wildfly 
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Create a wildfly init.d script (RedHat) 
+  file: src={{ jboss_home }}/bin/init.d/wildfly-init-redhat.sh dest=/etc/init.d/wildfly owner=root group=root state=link
+  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'RedHat' 
+  tags: wildfly 
+
+- name: Create a wildfly init.d script (Debian) 
+  file: src={{ jboss_home }}/bin/init.d/wildfly-init-debian.sh dest=/etc/init.d/wildfly owner=root group=root state=link
+  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'Debian' 
+  tags: wildfly 
+
+- name: Enable Wildfly to be started at boot
+  service: name=wildfly enabled=yes state=started
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Set wildfly environment variables 
+  action: template src=etc_profiled_wildfly.sh.j2 dest=/etc/profile.d/wildfly.sh owner=root group=root mode=0644 backup=yes
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 
+
+- name: Cleanup wildfly archive file
+  file: path={{ wildfly_install_dir }}/{{ wildfly_download_file }} state=absent
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
+  tags: wildfly 

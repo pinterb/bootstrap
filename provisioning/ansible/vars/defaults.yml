@@ -1,0 +1,4 @@
+---
+# file: vars/defaults.yml
+
+packager: apt

@@ -1,0 +1,5 @@
+---
+# file: roles/wildfly/install/meta/main.yml
+
+dependencies:
+- { role: java }
