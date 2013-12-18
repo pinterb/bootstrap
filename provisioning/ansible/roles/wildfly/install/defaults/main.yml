@@ -1,5 +1,8 @@
 ---
-# file: roles/wildfly/install/defaults/main.yml
+# file: roles/wildfly/(un)install/defaults/main.yml
+
+# NOTE: Since this file is shared by both install and uninstall,
+#       be sure to uninstall wildfly before changing these defaults!!!
 
 ###
 # Installation variables
@@ -19,12 +22,19 @@ wildfly_install_dir: /opt
 wildfly_conf_dir: /etc/default
 
 jboss_home: "{{ wildfly_install_dir }}/wildfly"
+jboss_config: standalone.xml
+jboss_mode: standalone
+
+###
+# User & Groups
+#
+# NOTE: This role will add this user/group during install AND remove user/group during uninstall
+#       So this user/group should be unique to this role.  DO NOT use this user/group for other things
+###
 jboss_user: jbossas
 jboss_groups: 
     - jbossas
     - custapps
-jboss_config: standalone.xml
-jboss_mode: standalone
 
 ###
 # standalone.xml variables

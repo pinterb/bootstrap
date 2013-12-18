@@ -1,0 +1,64 @@
+---
+# file: roles/wildfly/uninstall/tasks/main.yml
+
+- name: Is wildfly currently installed?
+  shell: "[ -f {{ jboss_home }}/jboss-modules.jar ] && echo 'Found' || echo ''"
+  register: wildfly_installed
+  tags: wildfly
+
+- name: Disable wildfly service 
+  service: name=wildfly enabled=no state=stopped
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Remove Debian rc.d run levels
+  command: /usr/sbin/update-rc.d -f wildfly remove 
+  when: wildfly_installed.stdout and ansible_os_family == 'Debian'
+  tags: wildfly
+
+- name: Delete wildfly init.d script 
+  file: path=/etc/init.d/wildfly state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Delete wildfly environment variables
+  file: path=/etc/profile.d/wildfly.sh state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Register name of configuration file (Redhat)
+  shell: "echo {{ wildfly_conf_dir }}/wildfly.conf"
+  register: wildfly_conf_file
+  when: wildfly_installed.stdout and ansible_os_family == 'RedHat'
+  tags: wildfly
+
+- name: Register name of configuration file (Debian)
+  shell: "echo {{ wildfly_conf_dir }}/wildfly"
+  register: wildfly_conf_file
+  when: wildfly_installed.stdout and ansible_os_family == 'Debian'
+  tags: wildfly
+
+- name: Delete wildfly configuration file 
+  file: path={{ wildfly_conf_file.stdout }} state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Delete wildfly symlink
+  file: path={{ jboss_home }} state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Delete wildfly installed directory 
+  file: path={{ wildfly_install_dir }}/{{ wildfly_expanded_dir }} state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Remove wildfly user
+  user: name={{ jboss_user }} state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
+
+- name: Remove wildfly group 
+  group: name={{ jboss_user }} state=absent
+  when: wildfly_installed.stdout
+  tags: wildfly
