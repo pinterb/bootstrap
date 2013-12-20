@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
+<!-- {{ ansible_managed }}  -->
+
 <server xmlns="urn:jboss:domain:2.0">
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
@@ -138,19 +140,51 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:2.0">
             <datasources>
-                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
-                    <driver>h2</driver>
+{% if wildfly_datasources %}
+  {% for datasource in wildfly_datasources %}
+              <datasource jndi-name="java:jboss/datasources/{{ datasource.jndi_name }}" pool-name="{{ datasource.pool_name }}" enabled="true" use-java-context="true">
+                    <connection-url>{{ datasource.url }}</connection-url>
+                    <driver>{{ datasource.driver }}</driver>
                     <security>
-                        <user-name>sa</user-name>
-                        <password>sa</password>
+                        <user-name>{{ datasource.user }}</user-name>
+                        <password>{{ datasource.password  }}</password>
                     </security>
-                </datasource>
-                <drivers>
-                    <driver name="h2" module="com.h2database.h2">
-                        <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
-                    </driver>
-                </drivers>
+    {% if datasource.pool_enabled %}
+                <pool>
+      {% if datasource.pool_min_size %}
+                  <min-pool-size>{{ datasource.pool_min_size }}</min-pool-size>
+      {% endif %}
+      {% if datasource.pool_max_size %}
+            <max-pool-size>{{ datasource.pool_max_size }}</max-pool-size>
+      {% endif %}
+              </pool>
+                    <timeout>
+                        <blocking-timeout-millis>30000</blocking-timeout-millis>
+                        <idle-timeout-minutes>5</idle-timeout-minutes>
+                    </timeout>
+    {% endif %}
+    {% if datasource.connection_validation_enabled %}
+            <validation>
+                        <check-valid-connection-sql>{{ datasource.connection_validation_sql }}</check-valid-connection-sql>
+                    </validation>
+    {% endif %}
+            </datasource>
+  {% endfor %}
+{% endif %}
+{% if wildfly_jdbc_drivers %}
+              <drivers>
+  {% for driver in wildfly_jdbc_drivers %}
+                  <driver name="{{ driver.name }}" module="{{ driver.module_name }}">
+      {% if driver.xa_class_name_included %}
+                  <xa-datasource-class>{{ driver.xa_class_name }}</xa-datasource-class>
+      {% endif %}
+      {% if driver.class_name_included %}
+            <driver-class>{{ driver.class_name }}</driver-class>
+      {% endif %}
+              </driver>
+  {% endfor %}
+              </drivers>
+{% endif %}
             </datasources>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:deployment-scanner:1.1">
@@ -350,10 +384,10 @@
     </profile>
     <interfaces>
         <interface name="management">
-            <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
+            <inet-address value="${jboss.bind.address.management:{{ wildfly_mgmt_bind_address }}}"/>
         </interface>
         <interface name="public">
-            <inet-address value="${jboss.bind.address:127.0.0.1}"/>
+            <inet-address value="${jboss.bind.address:{{ wildfly_public_bind_address }}}"/>
         </interface>
         <!-- TODO - only show this if the jacorb subsystem is added  -->
         <interface name="unsecure">

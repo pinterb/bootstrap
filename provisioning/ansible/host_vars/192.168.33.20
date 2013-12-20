@@ -1,0 +1,33 @@
+---
+# file: host_vars/192.168.33.20
+
+env: local
+
+# Role: wildfly
+wildfly_install_dir: /usr/local
+wildfly_http_port: 42100 
+wildfly_https_port: 8443
+
+wildfly_databases:
+  
+  - jndi_name: example
+    url: "jdbc:h2:target/example" 
+    driver_class: org.h2.Driver
+    user: sa
+    password: sa
+    pool_name: example_pooool
+    pool_min_size: 1
+    pool_max_size: 10
+    pool_prefill: true
+    new_connection_sql: "select 1" 
+  
+  - jndi_name: example2
+    url: "jdbc:h2:target/example2" 
+    driver_class: org.h2.Driver
+    user: sa2
+    password: sa2
+    pool_name: example2_pooool
+    pool_min_size: 2
+    pool_max_size: 12
+    pool_prefill: false
+    new_connection_sql: "select 1" 

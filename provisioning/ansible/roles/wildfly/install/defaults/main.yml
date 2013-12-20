@@ -28,23 +28,63 @@ jboss_mode: standalone
 ###
 # User & Groups
 #
-# NOTE: This role will add this user/group during install AND remove user/group during uninstall
-#       So this user/group should be unique to this role.  DO NOT use this user/group for other things
+# NOTE: This role will add jboss_user during install AND remove jboss_user during uninstall.
+#       So jboss_user should be unique to this role.  DO NOT use this jboss_user for other things.
 ###
 jboss_user: jbossas
 jboss_groups: 
-    - jbossas
-    - custapps
+  - jbossas
+  - custapps
 
 ###
 # standalone.xml variables
 ###
+wildfly_mgmt_bind_address: "127.0.0.1" 
+wildfly_public_bind_address: "127.0.0.1" 
 wildfly_mgmt_native_port: 9999
 wildfly_mgmt_http_port: 9990
 wildfly_mgmt_https_port: 9993
 wildfly_ajp_port: 8009 
 wildfly_http_port: 8080
 wildfly_https_port: 8443 
+
+wildfly_datasources:
+
+  - jndi_name: ExampleDS 
+    pool_name: ExampleDS 
+    url: "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+    driver: h2 
+    user: sa
+    password: sa
+    # pool_enabled is required. if false; then other pool variables are ignored
+    pool_enabled: false 
+    pool_min_size: 1
+    pool_max_size: 10
+    pool_prefill: true
+    # connection_validation_enabled is required. if false; then connection_validation_sql is ignored
+    connection_validation_enabled: false 
+    connection_validation_sql: "select 1"
+
+wildfly_jdbc_drivers:
+
+  - name: "h2"
+    module_name: "com.h2database.h2" 
+    # class_name_included is required. if false; then class_name is ignored
+    class_name_included: false 
+    class_name: "org.h2.jdbcx.JdbcDataSource" 
+    # xa_class_name_included is required. if false; then class_name is ignored
+    xa_class_name_included: true
+    xa_class_name: "org.h2.jdbcx.JdbcDataSource" 
+
+###
+# standalone.conf variables
+###
+wildfly_memory_min: "512m"
+wildfly_memory_max: "2048m"
+wildfly_max_perm_size: "512m"
+
+wildfly_java_opts:
+  - user.timezone=GMT
 
 ###
 # misc. variables

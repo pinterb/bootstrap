@@ -6,5 +6,5 @@
   sudo: True
   roles:
     - common
-    - java
     - maven
+    - wildfly/install

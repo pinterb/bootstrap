@@ -71,16 +71,10 @@
   when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
   tags: wildfly 
 
-- name: Register name of configuration file (Redhat)
-  shell: "echo {{ wildfly_conf_dir }}/wildfly.conf"
+- name: Register name of configuration file
+  shell: "[ \"{{ ansible_os_family }}\" = \"Debian\" ] && echo {{ wildfly_conf_dir }}/wildfly || echo {{ wildfly_conf_dir }}/wildfly.conf"
   register: wildfly_conf_file 
-  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'RedHat' 
-  tags: wildfly 
-
-- name: Register name of configuration file (Debian)
-  shell: "echo {{ wildfly_conf_dir }}/wildfly"
-  register: wildfly_conf_file 
-  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'Debian' 
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
   tags: wildfly 
 
 - name: Create wildfly configuration file 
@@ -94,14 +88,15 @@
   when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
   tags: wildfly 
 
-- name: Create a wildfly init.d script (RedHat) 
-  file: src={{ jboss_home }}/bin/init.d/wildfly-init-redhat.sh dest=/etc/init.d/wildfly owner=root group=root state=link
-  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'RedHat' 
+- name: Create a customized standalone.conf file 
+  action: template src=standalone.conf.j2 dest={{ jboss_home }}/bin/standalone.conf owner={{ jboss_user }} group={{ jboss_user }} mode=0644 backup=yes
+  notify: restart wildfly 
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
   tags: wildfly 
 
-- name: Create a wildfly init.d script (Debian) 
-  file: src={{ jboss_home }}/bin/init.d/wildfly-init-debian.sh dest=/etc/init.d/wildfly owner=root group=root state=link
-  when: ((not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)) and ansible_os_family == 'Debian' 
+- name: Create a wildfly init.d script
+  action: template src=wildfly-init-{{ ansible_os_family }}.sh.j2 dest=/etc/init.d/wildfly owner=root group=root mode=0755 backup=yes
+  when: (not wildfly_installed.stdout) or (not wildfly_version_installed.stdout)
   tags: wildfly 
 
 - name: Enable Wildfly to be started at boot
