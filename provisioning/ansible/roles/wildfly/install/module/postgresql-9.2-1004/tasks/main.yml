@@ -1,0 +1,16 @@
+---
+# file: roles/wildfly/install/module/postgresql-9.2-1004/tasks/main.yml
+
+- name: Create a directory for wildfly's postgresql jdbc module
+  file: path={{ wildfly_postgresql_jdbc_module_install_dir }} owner={{ jboss_user }} group={{ jboss_user }} state=directory
+  tags: wildfly
+
+- name: Copy postgresql jdbc module's resource files
+  copy: src={{ item }} dest={{ wildfly_postgresql_jdbc_module_install_dir }}/{{ item }} owner={{ jboss_user }} group={{ jboss_user }} mode=0644 mode=0644
+  with_items: wildfly_postgresql_jdbc_module_resources
+  tags: wildfly
+
+- name: Create a postgresql jdbc module.xml file
+  action: template src=module.xml.j2 dest={{ wildfly_postgresql_jdbc_module_install_dir }}/module.xml owner={{ jboss_user }} group={{ jboss_user }} mode=0644 backup=yes
+  notify: restart wildfly
+  tags: wildfly

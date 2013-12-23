@@ -1,0 +1,11 @@
+---
+# roles/wildfly/install/module/postgresql-9.3-1100/handlers/main.yml 
+
+- name: start wildfly 
+  service: name=wildfly state=started
+
+- name: stop wildfly 
+  service: name=wildfly state=stopped
+
+- name: restart wildfly 
+  service: name=wildfly state=restarted

@@ -2,7 +2,7 @@
 # file: roles/wildfly/install/module/com.cdw.mans.logging/vars/main.yml
 
 wildfly_cdw_mans_logging_module_name: "com.cdw.mans.logging"
-wildfly_cdw_mans_logging_module_install_dir: "{{ jboss_home }}/modules/com/cdw/mans.logging/main" 
+wildfly_cdw_mans_logging_module_install_dir: "{{ jboss_home }}/modules/com/cdw/mans/logging/main" 
 
 wildfly_cdw_mans_logging_module_resources:
   - syslog-handler-0.0.2.jar

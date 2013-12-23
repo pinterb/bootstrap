@@ -1,0 +1,5 @@
+---
+# file: roles/wildfly/install/module/mysql-connector-java-5.1.28/meta/main.yml 
+
+dependencies:
+- { role: wildfly/install }

@@ -46,7 +46,6 @@
   tags: jdk
 
 - name: Create a java latest symlink
-  #file: src={{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }} dest={{ java_install_dir_Debian_x86_64 }}/latest owner=root group=root state=link
   file: src={{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }} dest={{ java_install_dir_Debian_x86_64 }}/latest owner=root group=root state=link
   tags: jdk
 

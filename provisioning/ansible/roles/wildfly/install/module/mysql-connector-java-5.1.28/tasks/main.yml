@@ -1,0 +1,16 @@
+---
+# file: roles/wildfly/install/module/mysql-connector-java-5.1.28/tasks/main.yml
+
+- name: Create a directory for wildfly's mysql jdbc module
+  file: path={{ wildfly_mysql_connector_module_install_dir }} owner={{ jboss_user }} group={{ jboss_user }} state=directory
+  tags: wildfly
+
+- name: Copy mysql jdbc module's resource files
+  copy: src={{ item }} dest={{ wildfly_mysql_connector_module_install_dir }}/{{ item }} owner={{ jboss_user }} group={{ jboss_user }} mode=0644 mode=0644
+  with_items: wildfly_mysql_connector_module_resources
+  tags: wildfly
+
+- name: Create a mysql jdbc module.xml file
+  action: template src=module.xml.j2 dest={{ wildfly_mysql_connector_module_install_dir }}/module.xml owner={{ jboss_user }} group={{ jboss_user }} mode=0644 backup=yes
+  notify: restart wildfly
+  tags: wildfly

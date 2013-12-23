@@ -1,0 +1,15 @@
+---
+# file: roles/wildfly/install/module/mysql-connector-java-5.1.18/vars/main.yml 
+
+wildfly_mysql_connector_module_name: "com.mysql"
+wildfly_mysql_connector_module_install_dir: "{{ jboss_home }}/modules/com/mysql/main" 
+
+wildfly_mysql_connector_module_resources:
+  - mysql-connector-java-5.1.18-bin.jar 
+
+wildfly_mysql_connector_module_dependencies:
+  - name: "javax.api" 
+    services: "n/a" 
+
+  - name: "javax.transaction.api" 
+    services: "n/a" 

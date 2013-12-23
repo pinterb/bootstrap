@@ -1,0 +1,15 @@
+---
+# file: roles/wildfly/install/module/postgresql-9.2-1004/vars/main.yml 
+
+wildfly_postgresql_jdbc_module_name: "org.postgresql"
+wildfly_postgresql_jdbc_module_install_dir: "{{ jboss_home }}/modules/org/postgresql/main" 
+
+wildfly_postgresql_jdbc_module_resources:
+  - postgresql-9.2-1004.jdbc41.jar
+
+wildfly_postgresql_jdbc_module_dependencies:
+  - name: "javax.api" 
+    services: "n/a" 
+
+  - name: "javax.transaction.api" 
+    services: "n/a" 
