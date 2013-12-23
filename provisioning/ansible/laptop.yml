@@ -1,5 +1,5 @@
 ---
-# file: laptops.yml
+# file: laptop.yml
 
 - hosts: laptops
   connection: local
