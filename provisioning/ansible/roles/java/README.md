@@ -1,7 +1,6 @@
 # java 
 
-This role installs Oracle's JDK. By convention, you must manually download the
-binary from Oracle's web site.
+This role installs Oracle's JDK. By convention, you must manually download the binary from Oracle's website.
 
 See [files](https://github.com/pinterb/bootstrap/tree/master/provisioning/ansible/roles/java/files).
 
