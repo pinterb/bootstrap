@@ -10,4 +10,4 @@
     - curl 
     - rsync 
   when: ansible_os_family == 'Debian'
-  tags: common-debian-packages 
+  tags: common 

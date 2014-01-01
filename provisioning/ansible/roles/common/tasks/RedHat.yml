@@ -10,4 +10,4 @@
     - curl 
     - rsync 
   when: ansible_os_family == 'Redhat'
-  tags: common-redhat-packages 
+  tags: common 
