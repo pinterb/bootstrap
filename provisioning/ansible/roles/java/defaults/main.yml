@@ -1,11 +1,9 @@
 ---
 # file: roles/java/defaults/main.yml 
 
-#java.version.current:  
+#java.version:  
 java:
-  version:
-    current: 1.7.0_45
-    previous: 1.7.0_40
+  version: 1.7.0_45
 
 #java.installdir:  
   installdir: /usr/local/java 

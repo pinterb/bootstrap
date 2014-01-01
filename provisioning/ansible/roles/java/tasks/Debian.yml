@@ -5,54 +5,54 @@
   file: path={{ java.installdir }} owner=root group=root mode=0775 state=directory
   tags: jdk
 
-- name: Copy jdk{{ java.version.current }} archive file
+- name: Copy jdk{{ java.version }} archive file
   copy: src={{ java.archive.jdk }} dest={{ java.installdir }} mode=0664
   tags: jdk
 
-- name: Extract jdk{{ java.version.current }} archive file
-  action: command creates={{ java.installdir }}/jdk{{ java.version.current }} chdir={{ java.installdir }} tar zxvf {{ java.installdir }}/{{ java.archive.jdk }} --owner=root
+- name: Extract jdk{{ java.version }} archive file
+  action: command creates={{ java.installdir }}/jdk{{ java.version }} chdir={{ java.installdir }} tar zxvf {{ java.installdir }}/{{ java.archive.jdk }} --owner=root
   tags: jdk
 
 - name: Install java alternatives
-  action: command update-alternatives --install /usr/bin/java java {{ java.installdir }}/jdk{{ java.version.current }}/bin/java 1
+  action: command update-alternatives --install /usr/bin/java java {{ java.installdir }}/jdk{{ java.version }}/bin/java 1
   tags: jdk
 
 - name: Set java alternatives
-  action: command update-alternatives --set java {{ java.installdir }}/jdk{{ java.version.current }}/bin/java
+  action: command update-alternatives --set java {{ java.installdir }}/jdk{{ java.version }}/bin/java
   tags: jdk
 
 - name: Install jar alternatives
-  action: command update-alternatives --install /usr/bin/jar jar {{ java.installdir }}/jdk{{ java.version.current }}/bin/jar 1
+  action: command update-alternatives --install /usr/bin/jar jar {{ java.installdir }}/jdk{{ java.version }}/bin/jar 1
   tags: jdk
 
 - name: Set jar alternatives
-  action: command update-alternatives --set jar {{ java.installdir }}/jdk{{ java.version.current }}/bin/jar
+  action: command update-alternatives --set jar {{ java.installdir }}/jdk{{ java.version }}/bin/jar
   tags: jdk
 
 - name: Install javac alternatives
-  action: command update-alternatives --install /usr/bin/javac javac {{ java.installdir }}/jdk{{ java.version.current }}/bin/javac 1
+  action: command update-alternatives --install /usr/bin/javac javac {{ java.installdir }}/jdk{{ java.version }}/bin/javac 1
   tags: jdk
 
 - name: Set javac alternatives
-  action: command update-alternatives --set javac {{ java.installdir }}/jdk{{ java.version.current }}/bin/javac
+  action: command update-alternatives --set javac {{ java.installdir }}/jdk{{ java.version }}/bin/javac
   tags: jdk
 
 - name: Install javaws alternatives
-  action: command update-alternatives --install /usr/bin/javaws javaws {{ java.installdir }}/jdk{{ java.version.current }}/jre/bin/javaws 1
+  action: command update-alternatives --install /usr/bin/javaws javaws {{ java.installdir }}/jdk{{ java.version }}/jre/bin/javaws 1
   tags: jdk
 
 - name: Set javaws alternatives
-  action: command update-alternatives --set javaws {{ java.installdir }}/jdk{{ java.version.current }}/jre/bin/javaws
+  action: command update-alternatives --set javaws {{ java.installdir }}/jdk{{ java.version }}/jre/bin/javaws
   tags: jdk
 
 - name: Create a java latest symlink
-  file: src={{ java.installdir }}/jdk{{ java.version.current }} dest={{ java.installdir }}/latest owner=root group=root state=link
+  file: src={{ java.installdir }}/jdk{{ java.version }} dest={{ java.installdir }}/latest owner=root group=root state=link
   tags: jdk
 
 - name: Copy config to /etc/profile.d/java.sh
   action: template src=etc_profiled_java.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
   tags: jdk
 
-- name: Cleanup Debian jdk{{ java.version.current }} archive file
+- name: Cleanup Debian jdk{{ java.version }} archive file
   file: path={{ java.installdir }}/{{ java.archive.jdk }} state=absent
   tags: jdk
