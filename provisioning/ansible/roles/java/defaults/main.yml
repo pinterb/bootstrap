@@ -1,0 +1,25 @@
+---
+# file: roles/java/defaults/main.yml 
+
+#java.version.current:  
+java:
+  version:
+    current: 1.7.0_45
+    previous: 1.7.0_40
+
+#java.installdir.$ansible_os_family:  
+  installdir:  
+    Debian: /usr/local/java  
+    RedHat: /usr/java  
+
+#java.archive.jdk.$ansible_os_family:  
+  archive:
+    jdk:
+      Debian: jdk-7u45-linux-x64.tar.gz  
+      RedHat: jdk-7u45-linux-x64.rpm  
+
+#java.archive.jre.$ansible_os_family:  
+  archive:
+    jre:
+      Debian: jre-7u45-linux-x64.tar.gz 
+      RedHat: jre-7u45-linux-x64.rpm 
