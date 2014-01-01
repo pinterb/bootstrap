@@ -2,49 +2,49 @@
 # file: roles/java/tasks/RedHat.yml
 
 - name: Create a RedHat java directory
-  file: path={{ java_install_dir_RedHat_x86_64 }} owner=root group=root mode=0775 state=directory
+  file: path={{ java.installdir }} owner=root group=root mode=0775 state=directory
   tags: jdk 
 
-- name: Copy jdk{{ jvm_version }} rpm file
-  copy: src={{ jdk_archive_RedHat_x86_64 }} dest={{ java_install_dir_RedHat_x86_64 }} mode=0664
+- name: Copy jdk{{ java.version.current }} rpm file
+  copy: src={{ java.archive.jdk }} dest={{ java.installdir }} mode=0664
   tags: jdk 
 
-- name: Install jdk{{ jvm_version }} rpm file
-  action: shell yum -y --nogpgcheck localinstall {{ java_install_dir_RedHat_x86_64 }}/{{ jdk_archive_RedHat_x86_64 }} 
+- name: Install jdk{{ java.version.current }} rpm file
+  action: shell yum -y --nogpgcheck localinstall {{ java.installdir }}/{{ java.archive.jdk }} 
   tags: jdk 
 
 - name: Install java alternatives
-  action: command /usr/sbin/alternatives --install /usr/bin/java java {{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }}/bin/java 20000 
+  action: command /usr/sbin/alternatives --install /usr/bin/java java {{ java.installdir }}/jdk{{ java.version.current }}/bin/java 20000 
   tags: jdk 
 
 - name: Set java alternatives
-  action: command /usr/sbin/alternatives --set java {{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }}/bin/java
+  action: command /usr/sbin/alternatives --set java {{ java.installdir }}/jdk{{ java.version.current }}/bin/java
   tags: jdk 
 
 - name: Install jar alternatives
-  action: command /usr/sbin/alternatives --install /usr/bin/jar jar {{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }}/bin/jar 20000 
+  action: command /usr/sbin/alternatives --install /usr/bin/jar jar {{ java.installdir }}/jdk{{ java.version.current }}/bin/jar 20000 
   tags: jdk 
 
 - name: Set jar alternatives
-  action: command /usr/sbin/alternatives --set jar {{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }}/bin/jar
+  action: command /usr/sbin/alternatives --set jar {{ java.installdir }}/jdk{{ java.version.current }}/bin/jar
   tags: jdk 
 
 - name: Install javac alternatives
-  action: command /usr/sbin/alternatives --install /usr/bin/javac javac {{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }}/bin/javac 20000 
+  action: command /usr/sbin/alternatives --install /usr/bin/javac javac {{ java.installdir }}/jdk{{ java.version.current }}/bin/javac 20000 
   tags: jdk 
 
 - name: Set javac alternatives
-  action: command /usr/sbin/alternatives --set javac {{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }}/bin/javac
+  action: command /usr/sbin/alternatives --set javac {{ java.installdir }}/jdk{{ java.version.current }}/bin/javac
   tags: jdk 
 
 - name: Create a java latest symlink
-  file: src={{ java_install_dir_RedHat_x86_64 }}/jdk{{ jvm_version }} dest={{ java_install_dir_RedHat_x86_64 }}/latest owner=root group=root state=link
+  file: src={{ java.installdir }}/jdk{{ java.version.current }} dest={{ java.installdir }}/latest owner=root group=root state=link
   tags: jdk 
 
 - name: Copy config to /etc/profile.d/java.sh 
-  action: template src=etc_profiled_java_RedHat_x86_64.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
+  action: template src=etc_profiled_java.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
   tags: jdk 
 
-- name: Cleanup RedHat jdk{{ jvm_version }} archive file
-  file: path={{ java_install_dir_RedHat_x86_64 }}/{{ jdk_archive_RedHat_x86_64 }} state=absent
+- name: Cleanup RedHat jdk{{ java.version.current }} archive file
+  file: path={{ java.installdir }}/{{ java.archive.jdk }} state=absent
   tags: jdk 

@@ -2,57 +2,57 @@
 # file: roles/java/tasks/Debian.yml
 
 - name: Create Debian a java directory
-  file: path={{ java_install_dir_Debian_x86_64 }} owner=root group=root mode=0775 state=directory
+  file: path={{ java.installdir }} owner=root group=root mode=0775 state=directory
   tags: jdk
 
-- name: Copy jdk{{ jvm_version }} archive file
-  copy: src={{ jdk_archive_Debian_x86_64 }} dest={{ java_install_dir_Debian_x86_64 }} mode=0664
+- name: Copy jdk{{ java.version.current }} archive file
+  copy: src={{ java.archive.jdk }} dest={{ java.installdir }} mode=0664
   tags: jdk
 
-- name: Extract jdk{{ jvm_version }} archive file
-  action: command creates={{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }} chdir={{ java_install_dir_Debian_x86_64 }} tar zxvf {{ java_install_dir_Debian_x86_64 }}/{{ jdk_archive_Debian_x86_64 }} --owner=root
+- name: Extract jdk{{ java.version.current }} archive file
+  action: command creates={{ java.installdir }}/jdk{{ java.version.current }} chdir={{ java.installdir }} tar zxvf {{ java.installdir }}/{{ java.archive.jdk }} --owner=root
   tags: jdk
 
 - name: Install java alternatives
-  action: command update-alternatives --install /usr/bin/java java {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/java 1
+  action: command update-alternatives --install /usr/bin/java java {{ java.installdir }}/jdk{{ java.version.current }}/bin/java 1
   tags: jdk
 
 - name: Set java alternatives
-  action: command update-alternatives --set java {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/java
+  action: command update-alternatives --set java {{ java.installdir }}/jdk{{ java.version.current }}/bin/java
   tags: jdk
 
 - name: Install jar alternatives
-  action: command update-alternatives --install /usr/bin/jar jar {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/jar 1
+  action: command update-alternatives --install /usr/bin/jar jar {{ java.installdir }}/jdk{{ java.version.current }}/bin/jar 1
   tags: jdk
 
 - name: Set jar alternatives
-  action: command update-alternatives --set jar {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/jar
+  action: command update-alternatives --set jar {{ java.installdir }}/jdk{{ java.version.current }}/bin/jar
   tags: jdk
 
 - name: Install javac alternatives
-  action: command update-alternatives --install /usr/bin/javac javac {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/javac 1
+  action: command update-alternatives --install /usr/bin/javac javac {{ java.installdir }}/jdk{{ java.version.current }}/bin/javac 1
   tags: jdk
 
 - name: Set javac alternatives
-  action: command update-alternatives --set javac {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/bin/javac
+  action: command update-alternatives --set javac {{ java.installdir }}/jdk{{ java.version.current }}/bin/javac
   tags: jdk
 
 - name: Install javaws alternatives
-  action: command update-alternatives --install /usr/bin/javaws javaws {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/jre/bin/javaws 1
+  action: command update-alternatives --install /usr/bin/javaws javaws {{ java.installdir }}/jdk{{ java.version.current }}/jre/bin/javaws 1
   tags: jdk
 
 - name: Set javaws alternatives
-  action: command update-alternatives --set javaws {{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }}/jre/bin/javaws
+  action: command update-alternatives --set javaws {{ java.installdir }}/jdk{{ java.version.current }}/jre/bin/javaws
   tags: jdk
 
 - name: Create a java latest symlink
-  file: src={{ java_install_dir_Debian_x86_64 }}/jdk{{ jvm_version }} dest={{ java_install_dir_Debian_x86_64 }}/latest owner=root group=root state=link
+  file: src={{ java.installdir }}/jdk{{ java.version.current }} dest={{ java.installdir }}/latest owner=root group=root state=link
   tags: jdk
 
 - name: Copy config to /etc/profile.d/java.sh
-  action: template src=etc_profiled_java_Debian_x86_64.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
+  action: template src=etc_profiled_java.sh.j2 dest=/etc/profile.d/java.sh owner=root group=root mode=0644
   tags: jdk
 
-- name: Cleanup Debian jdk{{ jvm_version }} archive file
-  file: path={{ java_install_dir_Debian_x86_64 }}/{{ jdk_archive_Debian_x86_64 }} state=absent
+- name: Cleanup Debian jdk{{ java.version.current }} archive file
+  file: path={{ java.installdir }}/{{ java.archive.jdk }} state=absent
   tags: jdk

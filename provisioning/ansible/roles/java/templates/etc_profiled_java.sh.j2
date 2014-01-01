@@ -1,0 +1,5 @@
+#!/bin/sh
+export JAVA_HOME={{ java.installdir }}/latest
+export JRE_HOME={{ java.installdir }}/latest/jre
+export J2RE_HOME={{ java.installdir }}/latest/jre
+export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
