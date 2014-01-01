@@ -1,4 +1,4 @@
-# common
+# java 
 
 This role installs Oracle's JDK. By convention, you must manually download the
 binary from Oracle's web site.
