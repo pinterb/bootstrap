@@ -63,8 +63,6 @@ There are MANY variables to this role.
 |`wildfly_java_opts`|collection of java command line options|user.timezone=GMT|
 
 
-**Note:** Using the default values in [defaults/main.yml](https://github.com/pinterb/bootstrap/tree/master/provisioning/ansible/roles/wildfly/install/defaults/main.yaml) should result in an installation that closely resembles out-of-box install.
-
 ## role dependencies
 
   * [java](https://github.com/pinterb/bootstrap/tree/master/provisioning/ansible/roles/java)
