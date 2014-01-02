@@ -6,10 +6,21 @@ This role manages a standalone instance of JBoss's Wildfly application server.
 
 This role supports a couple of different opertions:
 
-  * wildfly/install: Basic install.  Configured same as out-of-box download from JBoss. 
-  * wildfly/module/mysql-connector-java-5.1.18: Basic install w/mysql jdbc driver module. 
-  * wildfly/module/postgresql-9.3-1100: Basic install w/postgresql jdbc driver module. 
-  * wildfly/uninstall: As the name implies...uninstall Wildfly. 
+#### wildfly/install
+
+Basic install.  Configured same as out-of-box download from JBoss. 
+
+#### wildfly/module/mysql-connector-java-5.1.18 
+
+Basic install w/mysql jdbc driver module. 
+
+#### wildfly/module/postgresql-9.3-1100 
+
+Basic install w/postgresql jdbc driver module.
+ 
+#### wildfly/uninstall 
+
+As the name implies...uninstall Wildfly. 
 
 ## role variables
 
