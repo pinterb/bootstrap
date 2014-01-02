@@ -6,9 +6,7 @@ This role manages a standalone instance of JBoss's Wildfly application server.
 
 This role supports a couple of different opertions:
 
-##### wildfly/install
-
-Basic install.  Configured same as out-of-box download from JBoss. 
+**wildfly/install** Basic install.  Configured same as out-of-box download from JBoss.
 
 ##### wildfly/module/mysql-connector-java-5.1.18 
 
