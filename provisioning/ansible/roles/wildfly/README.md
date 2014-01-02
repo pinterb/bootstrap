@@ -20,7 +20,7 @@ There are MANY variables to this role.
 
 **Note:** Using the default values in [defaults/main.yml](https://github.com/pinterb/bootstrap/blob/master/provisioning/ansible/roles/wildfly/install/defaults/main.yml) should result in an installation that closely resembles out-of-box install.
 
-### Installation:
+### installation:
 
 |name|description|default|
 |----|-----------|-------|
