@@ -7,7 +7,7 @@
   roles:
     - common
     - java 
-#    - maven 
+    - maven 
 #    - { role: golang, golang_path: ["/home/pinter/ext/golangthirdparty", "/home/pinter/projects/gocode"], golang_path_user: "pinter" }
 #    - vertx 
 #    - wildfly/install/module/mysql-connector-java-5.1.18

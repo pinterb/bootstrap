@@ -2,44 +2,35 @@
 # file: roles/maven/tasks/main.yml
 
 - name: Is maven currently installed?
-  shell: "[ -d {{ mvn_install_dir }}/maven ] && echo 'Found' || echo ''"
+  shell: "[ -d {{ maven.install_dir }}/maven ] && echo 'Found' || echo ''"
   register: mvn_installed
   tags: maven 
 
 - name: Create a maven directory
-  file: path={{ mvn_install_dir }} owner=root group=root state=directory
+  file: path={{ maven.install_dir }} owner=root group=root state=directory
   when: (not mvn_installed.stdout)
   tags: maven
 
-- name: Is current version (ie {{ mvn_minor_version }}) of maven already installed?
-  shell: "{{ mvn_install_dir }}/maven/bin/mvn -version | grep 'Apache Maven {{ mvn_minor_version }}'"
+- name: Is current version (ie {{ maven.version }}) of maven already installed?
+  shell: "{{ maven.install_dir }}/maven/bin/mvn -version | grep 'Apache Maven {{ maven.version }}'"
   when: mvn_installed.stdout
   register: mvn_version_installed
   changed_when: "mvn_version_installed.rc == 1"
   ignore_errors: True
   tags: maven
   
-- name: Download maven {{ mvn_minor_version }}
-  get_url: dest={{ mvn_install_dir }}/apache-maven-{{ mvn_minor_version }}-bin.tar.gz url={{ mvn_download_url }}
+- name: Download maven 
+  get_url: dest={{ maven.install_dir }}/apache-maven-{{ maven.version }}-bin.tar.gz url={{ maven.download_url }}
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven
 
-- name: Extract maven {{ mvn_minor_version }} archive file
-  action: command creates={{ mvn_install_dir }}/apache-maven-{{ mvn_minor_version }} chdir={{ mvn_install_dir }} tar zxvf {{ mvn_install_dir }}/apache-maven-{{ mvn_minor_version }}-bin.tar.gz --owner=root
+- name: Extract maven archive file
+  action: command creates={{ maven.install_dir }}/apache-maven-{{ maven.version }} chdir={{ maven.install_dir }} tar zxvf {{ maven.install_dir }}/apache-maven-{{ maven.version }}-bin.tar.gz --owner=root
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven
-
-#
-#- name: install maven alternatives
-#  action: command update-alternatives --install /usr/bin/mvn mvn ${mvn_install_dir}/apache-maven-${mvn_minor_version}/bin/mvn 1
-#  tags: maven
-#
-#- name: set maven alternatives
-#  action: command update-alternatives --set mvn ${mvn_install_dir}/apache-maven-${mvn_minor_version}/bin/mvn 
-#  tags: maven
 
 - name: Create a maven symlink
-  file: src={{ mvn_install_dir }}/apache-maven-{{ mvn_minor_version }} dest={{ mvn_install_dir }}/maven owner=root group=root state=link
+  file: src={{ maven.install_dir }}/apache-maven-{{ maven.version }} dest={{ maven.install_dir }}/maven owner=root group=root state=link
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven
 
@@ -48,7 +39,7 @@
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven
 
-- name: Cleanup maven {{ mvn_minor_version }} archive file 
-  file: path={{ mvn_install_dir }}/apache-maven-{{ mvn_minor_version }}-bin.tar.gz state=absent
+- name: Cleanup maven {{ maven.version }} archive file 
+  file: path={{ maven.install_dir }}/apache-maven-{{ maven.version }}-bin.tar.gz state=absent
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven

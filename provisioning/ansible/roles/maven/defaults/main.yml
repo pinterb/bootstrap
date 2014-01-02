@@ -1,0 +1,7 @@
+---
+# file: roles/maven/defaults/main.yml 
+
+maven:
+  version: 3.1.1
+  download_url: http://apache.mirrors.tds.net/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz 
+  install_dir: /opt
