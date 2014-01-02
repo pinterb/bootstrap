@@ -4,7 +4,7 @@ This role manages a standalone instance of JBoss's Wildfly application server.
 
 ## usage
 
-This role supports a couple of different opertions.
+This role supports a couple of different opertions:
 
   * wildfly/install: Basic install.  Configured same as out-of-box download from JBoss. 
   * wildfly/module/mysql-connector-java-5.1.18: Basic install w/mysql jdbc driver module. 
@@ -13,9 +13,11 @@ This role supports a couple of different opertions.
 
 ## role variables
 
-There are MANY variables to this role. But here's a high-level summary...
+There are MANY variables to this role. 
 
-Installation:
+**Note:** Using the default values in [defaults/main.yml](https://github.com/pinterb/bootstrap/blob/master/provisioning/ansible/roles/wildfly/install/defaults/main.yml) should result in an installation that closely resembles out-of-box install.
+
+### Installation:
 
 |name|description|default|
 |----|-----------|-------|
@@ -25,14 +27,14 @@ Installation:
 |`jboss_groups`|the collection of linux groups owning this wildfly install|jbossas|
 
 
-wildfly.conf:
+### wildfly.conf:
 
 |name|description|default|
 |----|-----------|-------|
 |`wildfly_conf_dir`|installation directory for wildfly.conf|/etc/default|
 
 
-standalone.xml:
+### standalone.xml:
 
 |name|description|default|
 |----|-----------|-------|
@@ -48,7 +50,7 @@ standalone.xml:
 |`wildfly_jdbc_drivers`|jdbc drivers|h2 driver you get with the out-of-box install of Wildfly|
 
 
-standalone.conf:
+### standalone.conf:
 
 |name|description|default|
 |----|-----------|-------|
