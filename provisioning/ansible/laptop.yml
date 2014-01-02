@@ -12,4 +12,4 @@
 #    - vertx 
 #    - wildfly/install/module/mysql-connector-java-5.1.18
 #    - wildfly/install/module/postgresql-9.3-1100
-#    - wildfly/uninstall
+    - wildfly/uninstall

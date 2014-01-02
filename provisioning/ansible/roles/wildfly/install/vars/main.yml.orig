@@ -1,0 +1,4 @@
+---
+# file: roles/wildfly/install/vars/main.yml
+
+wildfly_vars_feh: "wildfly-{{ wildfly_version }}"

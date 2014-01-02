@@ -8,22 +8,12 @@
 # Installation variables
 ###
 wildfly_version: 8.0.0.Beta1
-wildfly_base_download_url: http://download.jboss.org/wildfly/
-wildfly_expanded_dir: "wildfly-{{ wildfly_version }}"
-wildfly_download_file: "{{ wildfly_expanded_dir }}.tar.gz"
-# eg http://download.jboss.org/wildfly/8.0.0.Beta1/wildfly-8.0.0.Beta1.tar.gz
-wildfly_download_url: "{{ wildfly_base_download_url }}{{ wildfly_version }}/{{ wildfly_download_file }}"
-
 wildfly_install_dir: /opt
 
 ###
 # wildfly.conf variables
 ###
 wildfly_conf_dir: /etc/default
-
-jboss_home: "{{ wildfly_install_dir }}/wildfly"
-jboss_config: standalone.xml
-jboss_mode: standalone
 
 ###
 # User & Groups
@@ -34,7 +24,6 @@ jboss_mode: standalone
 jboss_user: jbossas
 jboss_groups: 
   - jbossas
-  - custapps
 
 ###
 # standalone.xml variables
@@ -85,9 +74,3 @@ wildfly_max_perm_size: "512m"
 
 wildfly_java_opts:
   - user.timezone=GMT
-
-###
-# misc. variables
-###
-wildfly_version_file: "{{ jboss_home }}/CDW_VERSION_INFO.txt"
-wildfly_version_text: "=== {{ wildfly_expanded_dir }} ==="

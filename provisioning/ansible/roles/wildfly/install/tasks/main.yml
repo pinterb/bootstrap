@@ -1,6 +1,9 @@
 ---
 # file: roles/wildfly/install/tasks/main.yml
 
+- name: Dump all vars
+  action: template src=dumpall.j2 dest=/tmp/ansible.all
+
 - name: Is wildfly currently installed?
   shell: "[ -f {{ jboss_home }}/jboss-modules.jar ] && echo 'Found' || echo ''"
   register: wildfly_installed
