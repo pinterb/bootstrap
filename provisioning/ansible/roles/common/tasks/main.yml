@@ -1,7 +1,16 @@
 ---
 # file: roles/common/tasks/main.yml
 
-- include: RedHat.yml
+- name: Add the OS specific varibles
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install the common packages in Redhat derivatives
+  yum: name={{ item }} state=installed
+  with_items: common_pkgs
   when: ansible_os_family == 'RedHat'
-- include: Debian.yml
+
+- name: Install the common packages in Debian derivatives
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items: common_pkgs
+  environment: env
   when: ansible_os_family == 'Debian'

@@ -1,0 +1,8 @@
+---
+# file: roles/common/vars/RedHat.yml
+
+common_pkgs:
+  - git
+  - wget 
+  - curl 
+  - rsync 

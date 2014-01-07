@@ -1,0 +1,5 @@
+---
+# file: roles/common/vars/main.yml
+
+env:
+  RUNLEVEL: 1
