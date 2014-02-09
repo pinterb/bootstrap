@@ -30,8 +30,7 @@
   tags: golang
 
 - name: Copy config go.sh to /etc/profile.d/
-  ###########################template: src=etc_profiled_go.sh.j2 dest=/etc/profile.d/go.sh owner=root group=root mode=0644
-  template: src=etc_profiled_go.sh.j2 dest=/tmp/go.sh owner=root group=root mode=0644
+  template: src=etc_profiled_go.sh.j2 dest=/etc/profile.d/go.sh owner=root group=root mode=0644
   when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
   tags: golang
 
