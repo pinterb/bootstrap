@@ -1,0 +1,22 @@
+---
+# file: roles/jdk/tasks/RedHat_alternatives.yml
+
+- name: Inform the system where new jdk is located
+  command: $item
+  with_items:
+    - /usr/sbin/alternatives --install /usr/bin/java java {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/java 2000 
+    - /usr/sbin/alternatives --install /usr/bin/javac javac {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/javac 2000 
+    - /usr/sbin/alternatives --install /usr/bin/javaws javaws {{ jdk.installdir }}/jdk{{ jdk.version }}/jre/bin/javaws 2000 
+    - /usr/sbin/alternatives --install /usr/bin/javah javah {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/javah 2000 
+    - /usr/sbin/alternatives --install /usr/bin/jar jar {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/jar 2000 
+  tags: jdk
+
+- name: Inform the system that new jdk must be the default
+  command: $item
+  with_items:
+    - /usr/sbin/alternatives --set java {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/java
+    - /usr/sbin/alternatives --set javac {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/javac
+    - /usr/sbin/alternatives --set javaws {{ jdk.installdir }}/jdk{{ jdk.version }}/jre/bin/javaws
+    - /usr/sbin/alternatives --set javah {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/javah
+    - /usr/sbin/alternatives --set jar {{ jdk.installdir }}/jdk{{ jdk.version }}/bin/jar
+  tags: jdk

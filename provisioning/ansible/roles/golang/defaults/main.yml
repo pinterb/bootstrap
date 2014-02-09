@@ -1,0 +1,18 @@
+---
+# file: roles/golang/defaults/main.yml 
+
+golang_install_dir: /usr/local
+
+# version info
+golang_major_version: 1 
+golang_minor_version: 1.2
+
+# download variables
+golang_base_download_url: https://go.googlecode.com/files
+golang_download_filename: "go{{ golang_minor_version }}.linux-amd64.tar.gz"
+golang_download_url: "{{ golang_base_download_url }}/{{ golang_download_filename }}" 
+
+# GOPATH variables
+golang_path: 
+  - "/tmp/golang"
+golang_path_user: root

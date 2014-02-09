@@ -1,0 +1,7 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+export JAVA_HOME={{ jdk.installdir }}/latest
+export JRE_HOME={{ jdk.installdir }}/latest/jre
+export J2RE_HOME={{ jdk.installdir }}/latest/jre
+export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH

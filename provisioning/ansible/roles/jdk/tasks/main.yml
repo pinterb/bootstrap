@@ -1,0 +1,45 @@
+---
+# file: roles/jdk/tasks/main.yml
+
+- name: Is java currently installed?
+  shell: "[ -d {{ jdk.installdir }}/jdk{{ jdk.version }} ] && echo 'Found' || echo ''"
+  register: jdk_installed
+  tags: jdk 
+
+- name: Create java install directory
+  file: path={{ jdk.installdir }} owner=root group=root mode=0775 state=directory
+  when: (not jdk_installed.stdout)
+  tags: jdk
+
+- name: Download jdk archive file
+  command: wget --no-check-certificate --no-cookies --output-document '{{ jdk.installdir }}/{{ jdk.download.filename }}' --header 'Cookie:gpw_e24=http%3A%2F%2Fwww.oracle.com' '{{ jdk.download.url }}' chdir={{ jdk.installdir }} creates={{ jdk.installdir }}/{{ jdk.download.filename }}
+  when: (not jdk_installed.stdout)
+  tags: jdk
+
+- name: Extract jdk archive file
+  command: tar zxvf {{ jdk.installdir }}/{{ jdk.download.filename }} --owner=root chdir={{ jdk.installdir }} creates={{ jdk.installdir }}/jdk{{ jdk.version }}
+  when: (not jdk_installed.stdout)
+  tags: jdk
+
+- name: Create a java latest symlink
+  file: src={{ jdk.installdir }}/jdk{{ jdk.version }} dest={{ jdk.installdir }}/latest owner=root group=root state=link
+  when: (not jdk_installed.stdout)
+  tags: jdk
+
+- name: Copy config to /etc/profile.d/jdk.sh
+  action: template src=etc_profiled_jdk.sh.j2 dest=/etc/profile.d/jdk.sh owner=root group=root mode=0644
+  when: (not jdk_installed.stdout)
+  tags: jdk
+
+- name: Cleanup jdk archive file
+  file: path={{ jdk.installdir }}/{{ jdk.download.filename }} state=absent
+  when: (not jdk_installed.stdout)
+  tags: jdk
+
+- include: RedHat_alternatives.yml
+  when: (ansible_os_family == "RedHat" and (not jdk_installed.stdout))
+  tags: jdk
+  
+- include: Debian_alternatives.yml
+  when: (ansible_os_family == "Debian" and (not jdk_installed.stdout))
+  tags: jdk

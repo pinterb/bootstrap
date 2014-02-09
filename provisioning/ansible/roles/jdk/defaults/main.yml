@@ -1,0 +1,14 @@
+---
+# file: roles/jdk/defaults/main.yml 
+
+#jdk.version:  
+jdk:
+  version: 1.7.0_51
+
+#jdk.installdir:  
+  installdir: /usr/local/java 
+
+#jdk.download:  
+  download:
+    url: "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz"
+    filename: jdk-7u51-linux-x64.tar.gz
