@@ -1,0 +1,7 @@
+---
+# file: roles/gradle/defaults/main.yml
+
+gradle_install_dir: /usr/local/gradle
+
+# version info
+gradle_version: 1.11

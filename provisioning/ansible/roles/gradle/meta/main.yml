@@ -1,0 +1,5 @@
+---
+# file: roles/gradle/meta/main.yml
+
+dependencies:
+- { role: jdk }

@@ -1,0 +1,37 @@
+---
+# file: roles/gradle/tasks/main.yml
+
+- name: Is gradle currently installed?
+  shell: "[ -d {{ gradle_install_dir }}/{{ gradle_extracted_dirname }} ] && echo 'Found' || echo ''"
+  register: gradle_installed
+  tags: gradle
+
+- name: Create gradle install directory
+  file: path={{ gradle_install_dir }} owner=root group=root mode=0775 state=directory
+  when: (not gradle_installed.stdout)
+  tags: gradle
+
+- name: Download gradle binary archive file
+  get_url: dest={{ gradle_install_dir }}/{{ gradle_download_filename }} url={{ gradle_download_url }}
+  when: (not gradle_installed.stdout)
+  tags: gradle
+
+- name: Extract gradle archive file
+  unarchive: src={{ gradle_install_dir }}/{{ gradle_download_filename }} dest={{ gradle_install_dir }}
+  when: (not gradle_installed.stdout)
+  tags: gradle
+
+- name: Create a gradle latest symlink
+  file: src={{ gradle_install_dir }}/{{ gradle_extracted_dirname }} dest={{ gradle_install_dir }}/latest owner=root group=root state=link
+  when: (not gradle_installed.stdout)
+  tags: gradle
+
+- name: Copy config to /etc/profile.d/gradle.sh
+  action: template src=etc_profiled_gradle.sh.j2 dest=/etc/profile.d/gradle.sh owner=root group=root mode=0644
+  when: (not gradle_installed.stdout)
+  tags: gradle
+
+- name: Cleanup gradle archive file
+  file: path={{ gradle_install_dir }}/{{ gradle_download_filename }} state=absent
+  when: (not gradle_installed.stdout)
+  tags: gradle

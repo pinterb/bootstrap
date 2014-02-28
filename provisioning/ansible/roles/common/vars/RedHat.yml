@@ -3,6 +3,7 @@
 
 common_pkgs:
   - git
-  - wget 
-  - curl 
-  - rsync 
+  - wget
+  - curl
+  - rsync
+  - unzip

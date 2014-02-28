@@ -1,0 +1,8 @@
+---
+# file: roles/gradle/vars/main.yml
+
+# download variables
+gradle_base_download_url: "http://services.gradle.org/distributions"
+gradle_extracted_dirname: "gradle-{{ gradle_version }}"
+gradle_download_filename: "{{ gradle_extracted_dirname }}-bin.zip"
+gradle_download_url: "{{ gradle_base_download_url }}/{{ gradle_download_filename }}"

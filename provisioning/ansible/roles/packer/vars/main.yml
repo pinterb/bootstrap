@@ -1,0 +1,7 @@
+---
+# file: roles/packer/vars/main.yml
+
+# download variables
+packer_base_download_url: "https://dl.bintray.com/mitchellh/packer"
+packer_download_filename: "{{ packer_version }}_linux_amd64.zip"
+packer_download_url: "{{ packer_base_download_url }}/{{ packer_download_filename }}"

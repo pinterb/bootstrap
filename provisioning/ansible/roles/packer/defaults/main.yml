@@ -1,0 +1,7 @@
+---
+# file: roles/packer/defaults/main.yml
+
+packer_install_dir: /usr/local/packer
+
+# version info
+packer_version: 0.5.2
