@@ -11,7 +11,7 @@
   when: (not golang_installed.stdout)
   tags: golang
 
-- name: Is current version of Go already installed? 
+- name: Is current version of Go already installed?
   shell: "{{ golang_install_dir }}/go/bin/go version | grep go{{ golang_minor_version}}"
   #shell: "{{ golang_install_dir }}/go/bin/go version | sed 's/[^0-9.]*\([0-9.]*\).*/\1/' | grep {{ golang_minor_version }}"
   when: golang_installed.stdout
@@ -21,17 +21,17 @@
 
 - name: Download Go binary archive file
   get_url: dest={{ golang_install_dir }}/{{ golang_download_filename }} url={{ golang_download_url }}
-  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout)
   tags: golang
 
 - name: Extract Go binary archive file
   command: chdir={{ golang_install_dir }} tar zxvf {{ golang_install_dir }}/{{ golang_download_filename }} --owner=root
-  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout)
   tags: golang
 
 - name: Copy config go.sh to /etc/profile.d/
   template: src=etc_profiled_go.sh.j2 dest=/etc/profile.d/go.sh owner=root group=root mode=0644
-  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout)
   tags: golang
 
 - name: Create GOPATH base directories
@@ -58,7 +58,13 @@
   when: ((not golang_installed.stdout) or (not golang_version_installed.stdout)) and golang_path is defined and golang_path_user is defined
   tags: golang
 
-- name: Cleanup Go binary archive file 
+- name: Install third party developer tools
+  shell: su - {{ golang_path_user }} -c 'go get -u {{ item }}'
+  with_items: golang_dev_tools
+  when: golang_install_dev_tools
+  tags: golang
+
+- name: Cleanup Go binary archive file
   file: path={{ golang_install_dir }}/{{ golang_download_filename }} state=absent
-  when: (not golang_installed.stdout) or (not golang_version_installed.stdout) 
+  when: (not golang_installed.stdout) or (not golang_version_installed.stdout)
   tags: golang

@@ -11,7 +11,7 @@
   when: (not mvn_installed.stdout)
   tags: maven
 
-- name: Is current version (ie {{ maven.version }}) of maven already installed?
+- name: Is current version of maven already installed?
   shell: "{{ maven.install_dir }}/maven/bin/mvn -version | grep 'Apache Maven {{ maven.version }}'"
   when: mvn_installed.stdout
   register: mvn_version_installed
@@ -39,7 +39,7 @@
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven
 
-- name: Cleanup maven {{ maven.version }} archive file 
+- name: Cleanup maven archive file 
   file: path={{ maven.install_dir }}/apache-maven-{{ maven.version }}-bin.tar.gz state=absent
   when: (not mvn_installed.stdout) or (not mvn_version_installed.stdout)
   tags: maven

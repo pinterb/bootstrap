@@ -1,17 +1,10 @@
 #!/bin/sh
 # {{ ansible_managed }}
 
-{% if golang_path is defined %}
-export GOPATH={{ golang_path|join(':') }}
-{% endif %}
 export GOROOT={{ golang_install_dir }}/go
-{% if golang_path is defined %}
-{% if golang_path is iterable %}
-export PATH=$PATH:$GOROOT/bin:{{ golang_path|join('/bin:') }}/bin
-{% else %}
-export PATH=$PATH:$GOROOT/bin:{{ golang_path }}/bin
-{% endif %}
-{% else %}
 export PATH=$PATH:$GOROOT/bin
+
+{% if golang_path %}
+export GOPATH={{ golang_path|join(':') }}
+export PATH=$PATH:{{ golang_path|join('/bin:') }}/bin
 {% endif %}
-~

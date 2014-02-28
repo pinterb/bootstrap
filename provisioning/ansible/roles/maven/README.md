@@ -12,4 +12,4 @@ This role installs [Apache Maven](http://maven.apache.org/).
 
 ## role dependencies
 
-  * [java](https://github.com/pinterb/bootstrap/tree/master/provisioning/ansible/roles/java)
+  * [java](https://github.com/pinterb/ansible-roles/tree/master/java)

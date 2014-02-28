@@ -1,18 +1,27 @@
 ---
-# file: roles/golang/defaults/main.yml 
+# file: roles/golang/defaults/main.yml
 
 golang_install_dir: /usr/local
 
 # version info
-golang_major_version: 1 
+golang_major_version: 1
 golang_minor_version: 1.2
 
 # download variables
 golang_base_download_url: "https://go.googlecode.com/files"
 golang_download_filename: "go{{ golang_minor_version }}.linux-amd64.tar.gz"
-golang_download_url: "{{ golang_base_download_url }}/{{ golang_download_filename }}" 
+golang_download_url: "{{ golang_base_download_url }}/{{ golang_download_filename }}"
 
 # GOPATH variables
-golang_path: 
-  - "/tmp/golang"
+golang_path: []
 golang_path_user: root
+
+# golang dev tools (opinionated)
+golang_install_dev_tools: true
+golang_dev_tools:
+  - github.com/golang/lint/golint
+  - github.com/stretchr/testify
+  - github.com/philips/goven
+  - github.com/tsenart/vegeta
+  - github.com/mattn/goveralls
+  - github.com/smartystreets/goconvey
