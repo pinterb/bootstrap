@@ -4,7 +4,7 @@ This role manages a standalone instance of JBoss's Wildfly application server.
 
 ## usage
 
-This role supports a couple of different opertions:
+This role supports a couple of different operations:
 
 *wildfly/install* - Basic install.  Configured same as out-of-box download from JBoss.
 
